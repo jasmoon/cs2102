@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from database import init_app
+
 
 def create_app():
     """Create and configure an instance of the Flask application."""
@@ -11,11 +11,13 @@ def create_app():
         return 'Hello, World!'
 
     # register the database commands
-    init_app(app)
+    import database
+    database.init_app(app)
 
-    # apply the blueprints to the app
     import auth
     app.register_blueprint(auth.bp)
+    import campaign
+    app.register_blueprint(campaign.bp)
 
     # in another app, you might define a separate main index here with
     # app.route, while giving the blog blueprint a url_prefix, but for

@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block header %}
+<h1>{% block title %}Edit campaign{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    {{ form.csrf_token }}
+    {{ form.campaign_id(value=id) }}
+    <p>{{ form.name.label }} {{ form.name }}</p>
+    <p>{{ form.description.label }} {{ form.description }}</p>
+    <p>{{ form.image.label }} {{ form.image }}</p>
+    <p>{{ form.amount_requested.label }} {{ form.amount_requested }}</p>
+
+    <input type="submit">
+</form>
+{% endblock %}

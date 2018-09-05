@@ -1,10 +1,52 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<h1>{% block title %}Campaign - {{name}} {% endblock %}</h1>
+<h1>
+    {% block title %}
+    {% if campaign is defined %}
+        {{ campaign['name'] }}
+    {% else %}
+        Campaign not found!
+    {% endif %}
+    {% endblock %}
+</h1>
 {% endblock %}
 
 {% block content %}
-<!-- Page for a campaign-->
+{% if campaign is not none %}
+<section>
+    <h1>Campaign Info</h1>
+    <p>{{ campaign.name }}</p>
+    <p>{{ campaign.description }}</p>
+    <p>{{ campaign.image }}</p>
+    <p>{{ campaign.amount_requested }}</p>
+    <p>{{ campaign.date_created}}</p>
+    <p>{{ campaign.last_modified }}</p>
+    <hr>
+    <h1>Owner Info</h1>
+    <p>{{ campaign.owner_id }}</p>
+    <p>{{ campaign.first_name }}</p>
+    <p>{{ campaign.last_name }}</p>
+    <p>{{ campaign.profile_image }}</p>
+    <p>{{ campaign.description }}</p>
 
+    {% if campaign.owner_id != g.user['id'] %}
+    <hr>
+    <h1>Donation Form</h1>
+    <form method="post">
+        {{ form.csrf_token }}
+        {{ form.campaign_id(value=campaign.campaign_id) }}
+        <p>{{ form.amount.label }} {{ form.amount }}</p>
+
+        <input type="submit">
+    </form>
+    { % elif campaign.owner_id == g.user['id'] %}
+        <a href="{{ url_for('campaign.edit', id=campaign_id) }}"> Edit</a>
+    {% endif %}
+
+</section>
+
+{% else %}
+    <p>Campaign not found!</p>
+{% endif %}
 {% endblock %}

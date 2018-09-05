@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms.validators import DataRequired, Email, EqualTo, URL, Optional
-from wtforms import StringField, PasswordField, HiddenField, TextAreaField
+from wtforms.validators import DataRequired, Email, EqualTo, URL, Optional, NumberRange
+from wtforms import StringField, PasswordField, HiddenField, TextAreaField, DecimalField
 
 
 class LoginForm(FlaskForm):
@@ -20,7 +20,7 @@ class RegistrationForm(FlaskForm):
     postal_code = StringField('Postal Code', validators=[])
     phone_number = StringField('Phone Number', validators=[DataRequired()])
     profile_image = StringField('Profile Image', validators=[DataRequired(), URL()])
-    description = TextAreaField('Short bio', validators=[DataRequired()])
+    description = TextAreaField('Short Bio', validators=[DataRequired()])
     stripe_token = HiddenField("Stripe Token", validators=[DataRequired()])
 
 
@@ -32,3 +32,26 @@ class ResetForm(FlaskForm):
 
 class RequestResetForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
+
+
+class CampaignCreationForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    description = TextAreaField('Short bio', validators=[DataRequired()])
+    image = StringField('Image', validators=[DataRequired(), URL()])
+    amount_requested = DecimalField('Amount Requested', places=2, validators=[DataRequired(),
+                                                        NumberRange(min=0, message="Amount must be more than %(min)s")])
+
+
+class CampaignEditForm(FlaskForm):
+    campaign_id = HiddenField("Campaign ID", validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
+    description = TextAreaField('Short bio', validators=[DataRequired()])
+    image = StringField('Image', validators=[DataRequired(), URL()])
+    amount_requested = DecimalField('Amount Requested', places=2, validators=[DataRequired(),
+                                                                              NumberRange(min=0, message="Amount must be more than %(min)s")])
+
+
+class DonationForm(FlaskForm):
+    campaign_id = HiddenField("Campaign ID", validators=[DataRequired()])
+    amount = DecimalField('Amount Donating', places=2, validators=[DataRequired(),
+                                                       NumberRange(min=0, message="Amount must be more than %(min)s")])

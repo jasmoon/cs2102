@@ -1,5 +1,6 @@
 import functools
 import hashlib
+import stripe
 
 from flask import Blueprint, flash, g, redirect, render_template, current_app, session, url_for, request
 from werkzeug.security import check_password_hash, generate_password_hash, safe_str_cmp
@@ -9,7 +10,7 @@ from database import get_connection, get_cursor
 from forms import LoginForm, RegistrationForm, ResetForm, RequestResetForm
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
-
+stripe.api_key = "sk_test_aWtKLQym8glXQBvFQrfYvI1Z"
 
 def login_required(view):
     """View decorator that redirects anonymous users to the login page."""
@@ -52,8 +53,16 @@ def register():
         with connection:
             with cursor:
                 try:
+                    current_app.logger.info("adding user account")
                     cursor.execute("INSERT INTO user_account(email, password) VALUES (%s, %s);",
                                    (form.email.data, generate_password_hash(form.password.data)))
+
+                    customer = stripe.Customer.create(
+                        source=form.stripe_token.data,
+                        email=form.email.data
+                    )
+
+                    current_app.logger.info("stripe token is %s" % customer.id)
                     cursor.execute("""INSERT INTO 
                         user_profile(first_name, last_name, address1, address2, postal_code, phone_number, 
                         profile_image, description, stripe_token, user_account_id) 
@@ -67,7 +76,7 @@ def register():
                                        form.phone_number.data,
                                        form.profile_image.data,
                                        form.description.data,
-                                       form.stripe_token.data,
+                                       customer.id,
                                        form.email.data
                                    )
                     )
@@ -79,7 +88,8 @@ def register():
                     current_app.logger.error(e)
                     error = "An error has occurred. Please try again later."
     else:
-        flash(form.errors)
+        flash(form.errors, 'error')
+
     return render_template('auth/register.html', form=form)
 
 
@@ -108,10 +118,10 @@ def login():
             session.clear()
             session['user_id'] = user['id']
 
-            flash("logged in %s" % user['id'])
+            flash("Logged in!" % user['id'], 'success')
             return redirect(url_for('index'))
 
-        flash(error)
+        flash(error, 'error')
 
     return render_template('auth/login.html', form=form)
 
@@ -136,7 +146,7 @@ def reset_verify(uid, date_hash):
                 session['reset_ok'] = True
                 return redirect(url_for("auth.reset_password"))
             else:
-                flash("Invalid reset link. Please try again.")
+                flash("Invalid reset link. Please try again.", 'error')
                 return redirect(url_for("auth.request_reset"))
 
 
@@ -152,12 +162,12 @@ def reset_password():
                     cursor.execute("UPDATE user_account SET password = %s WHERE id = %s",
                                    (generate_password_hash(form.password.data), session['reset_user_id'])
                                    )
-                    flash("Reset successful!")
+                    flash("Reset successful!", 'success')
                     return redirect(url_for("auth.login"))
                 except Exception as e:
                     error = "Something went wrong. Please try again later"
                     current_app.logger.error(e)
-                    flash(error)
+                    flash(error, 'error')
 
     return render_template("auth/password_reset.html", form=form)
 
