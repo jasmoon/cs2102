@@ -1,11 +1,12 @@
 import functools
+import hashlib
 
-from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
-from werkzeug.security import check_password_hash, generate_password_hash
+from flask import Blueprint, flash, g, redirect, render_template, current_app, session, url_for
+from werkzeug.security import check_password_hash, generate_password_hash, safe_str_cmp
 from psycopg2 import IntegrityError
 
 from database import get_connection, get_cursor
-from forms import LoginForm, RegistrationForm
+from forms import LoginForm, RegistrationForm, ResetForm, RequestResetForm
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -51,10 +52,8 @@ def register():
         with connection:
             with cursor:
                 try:
-                    print("trying to insert user")
                     cursor.execute("INSERT INTO user_account(email, password) VALUES (%s, %s);",
                                    (form.email.data, generate_password_hash(form.password.data)))
-                    print("trying to insert profile")
                     cursor.execute("""INSERT INTO 
                         user_profile(first_name, last_name, address1, address2, postal_code, phone_number, 
                         profile_image, description, stripe_token, user_account_id) 
@@ -73,13 +72,14 @@ def register():
                                    )
                     )
                     return redirect(url_for('auth.login'))
-                except IntegrityError:
+                except IntegrityError as e:
+                    current_app.logger.error(e)
                     error = "Email already exists!"
                 except Exception as e:
-                    print(e)
+                    current_app.logger.error(e)
                     error = "An error has occurred. Please try again later."
-
-        flash(error)
+    else:
+        flash(form.errors)
     return render_template('auth/register.html', form=form)
 
 
@@ -89,6 +89,7 @@ def login():
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
+        connection = get_connection()
         cursor = get_cursor()
         error = None
         cursor.execute(
@@ -96,16 +97,18 @@ def login():
         )
         user = cursor.fetchone()
 
-        if user is None:
-            error = 'Email doesn\'t exist'
-        elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
-
-        if error is None:
+        if user is None or not check_password_hash(user['password'], password):
+            error = 'Incorrect email/password combination.'
+        else:
             # store the user id in a new session and return to the index
+            cursor.execute(
+                "SELECT update_last_login(%s);", (user['id'],)
+            )
+            connection.commit()
             session.clear()
             session['user_id'] = user['id']
-            flash("logged in")
+
+            flash("logged in %s" % user['id'])
             return redirect(url_for('index'))
 
         flash(error)
@@ -115,6 +118,77 @@ def login():
 
 @bp.route('/logout')
 def logout():
-    """Clear the current session, including the stored user id."""
     session.clear()
     return redirect(url_for('index'))
+
+
+@bp.route('/reset/<int:uid>/<string:date_hash>', methods=('GET',))
+def reset_verify(uid, date_hash):
+    connection = get_connection()
+    cursor = get_cursor()
+    with connection:
+        with cursor:
+            cursor.execute("SELECT last_login FROM user_account WHERE id = %s", str(uid))
+            row = cursor.fetchone()
+            if safe_str_cmp(hashlib.md5(str(row['last_login']).encode()).hexdigest(), date_hash):
+                session.clear()
+                session['reset_user_id'] = uid
+                session['reset_ok'] = True
+                return redirect(url_for("auth.reset_password"))
+            else:
+                return redirect(url_for("auth.request_reset"))
+
+
+@bp.route('/reset/password', methods=('GET', 'POST'))
+def reset_password():
+    form = ResetForm()
+    connection = get_connection()
+    cursor = get_cursor()
+    if session['reset_ok'] and session['reset_user_id'] is not None and form.validate_on_submit():
+        with connection:
+            with cursor:
+                try:
+                    cursor.execute("UPDATE user_account SET password = %s WHERE id = %s",
+                                   (generate_password_hash(form.password.data), session['reset_user_id'])
+                                   )
+                    flash("Reset successful!")
+                    return redirect(url_for("auth.login"))
+                except Exception as e:
+                    error = "Something went wrong. Please try again later"
+                    current_app.logger.error(e)
+                    flash(error)
+
+    return render_template("auth/password_reset.html", form=form)
+
+
+@bp.route('reset/request', methods=('GET', 'POST'))
+def request_reset():
+    form = RequestResetForm()
+    connection = get_connection()
+    cursor = get_cursor()
+    if form.validate_on_submit():
+        with connection:
+            with cursor:
+                current_app.logger.info(form.email.data)
+                cursor.execute("SELECT * FROM user_account WHERE email = %s", (form.email.data,))
+                row = cursor.fetchone()
+                current_app.logger.info(row)
+                if row['email'] is not None:
+                    date_hash = hashlib.md5(str(row['last_login']).encode()).hexdigest()
+                    return render_template("auth/request_reset.html", hash=date_hash)
+
+    return render_template("auth/request_reset.html", form=form)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

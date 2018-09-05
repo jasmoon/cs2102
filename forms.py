@@ -16,7 +16,7 @@ class RegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
     address1 = StringField('Address', validators=[DataRequired()])
-    address2 = StringField('Address 2', validators=[Optional()])
+    address2 = StringField('Address 2', validators=[Optional])
     postal_code = StringField('Postal Code', validators=[])
     phone_number = StringField('Phone Number', validators=[DataRequired()])
     profile_image = StringField('Profile Image', validators=[DataRequired(), URL()])
@@ -24,3 +24,11 @@ class RegistrationForm(FlaskForm):
     stripe_token = HiddenField("Stripe Token", validators=[DataRequired()])
 
 
+class ResetForm(FlaskForm):
+    password = PasswordField('New Password', validators=[DataRequired()])
+    password2 = PasswordField('Repeat Password',
+                              validators=[DataRequired(), EqualTo('password', message="Your passwords do not match!")])
+
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])

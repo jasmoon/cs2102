@@ -3,11 +3,20 @@ CREATE TABLE IF NOT EXISTS user_account(
   id SERIAL PRIMARY KEY,
   email VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
-  salt VARCHAR(255) NOT NULL,
   is_active BOOLEAN DEFAULT TRUE,
   last_login TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE OR REPLACE FUNCTION update_last_login(id INT) RETURNS TIMESTAMP AS $$
+#variable_conflict use_variable
+DECLARE
+  currtime TIMESTAMP := NOW();
+BEGIN
+  UPDATE user_account SET last_login = currtime WHERE user_account.id = id;
+  RETURN currtime;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS user_profile(
   id SERIAL PRIMARY KEY,
@@ -70,5 +79,4 @@ CREATE TABLE IF NOT EXISTS campaign_relation(
     NOT (user_role = 'pledged' AND transaction_id IS NULL)
   )
 );
-
 
