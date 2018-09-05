@@ -1,7 +1,7 @@
 import functools
 import hashlib
 
-from flask import Blueprint, flash, g, redirect, render_template, current_app, session, url_for
+from flask import Blueprint, flash, g, redirect, render_template, current_app, session, url_for, request
 from werkzeug.security import check_password_hash, generate_password_hash, safe_str_cmp
 from psycopg2 import IntegrityError
 
@@ -136,6 +136,7 @@ def reset_verify(uid, date_hash):
                 session['reset_ok'] = True
                 return redirect(url_for("auth.reset_password"))
             else:
+                flash("Invalid reset link. Please try again.")
                 return redirect(url_for("auth.request_reset"))
 
 
@@ -169,12 +170,23 @@ def request_reset():
     if form.validate_on_submit():
         with connection:
             with cursor:
-                current_app.logger.info(form.email.data)
                 cursor.execute("SELECT * FROM user_account WHERE email = %s", (form.email.data,))
                 row = cursor.fetchone()
-                current_app.logger.info(row)
                 if row['email'] is not None:
                     date_hash = hashlib.md5(str(row['last_login']).encode()).hexdigest()
+                    import smtplib
+                    from email.mime.text import MIMEText
+
+                    message = MIMEText("""You've requested a password change! Head over to %s""" % \
+                              (request.host + url_for("auth.reset_verify", uid=row['id'], date_hash=date_hash)))
+                    message['Subject'] = "Password reset request"
+                    message['From'] = "cs2102@sute.jp"
+                    message['To'] = row['email']
+
+                    smtp = smtplib.SMTP(host="127.0.0.1", port=8080)
+                    smtp.sendmail("cs2102@sute.jp", row['email'], message.as_string())
+
+                    current_app.logger.info(message)
                     return render_template("auth/request_reset.html", hash=date_hash)
 
     return render_template("auth/request_reset.html", form=form)

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired, Email, EqualTo, URL, Optional
-from wtforms import StringField, PasswordField, HiddenField
+from wtforms import StringField, PasswordField, HiddenField, TextAreaField
 
 
 class LoginForm(FlaskForm):
@@ -16,11 +16,11 @@ class RegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
     address1 = StringField('Address', validators=[DataRequired()])
-    address2 = StringField('Address 2', validators=[Optional])
+    address2 = StringField('Address 2', validators=[Optional()])
     postal_code = StringField('Postal Code', validators=[])
     phone_number = StringField('Phone Number', validators=[DataRequired()])
     profile_image = StringField('Profile Image', validators=[DataRequired(), URL()])
-    description = StringField('Short bio', validators=[DataRequired()])
+    description = TextAreaField('Short bio', validators=[DataRequired()])
     stripe_token = HiddenField("Stripe Token", validators=[DataRequired()])
 
 
