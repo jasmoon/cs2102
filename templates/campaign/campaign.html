@@ -40,10 +40,9 @@
 
         <input type="submit">
     </form>
-    { % elif campaign.owner_id == g.user['id'] %}
-        <a href="{{ url_for('campaign.edit', id=campaign_id) }}"> Edit</a>
+    {% elif campaign.owner_id == g.user['id'] %}
+        <a href="{{ url_for('campaign.edit_campaign', id=campaign.campaign_id) }}"> Edit</a>
     {% endif %}
-
 </section>
 
 {% else %}

@@ -12,6 +12,7 @@ from forms import LoginForm, RegistrationForm, ResetForm, RequestResetForm
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 stripe.api_key = "sk_test_aWtKLQym8glXQBvFQrfYvI1Z"
 
+
 def login_required(view):
     """View decorator that redirects anonymous users to the login page."""
     @functools.wraps(view)
@@ -118,7 +119,7 @@ def login():
             session.clear()
             session['user_id'] = user['id']
 
-            flash("Logged in!" % user['id'], 'success')
+            flash("Logged in!", 'success')
             return redirect(url_for('index'))
 
         flash(error, 'error')

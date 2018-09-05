@@ -66,7 +66,6 @@ def edit_campaign(id):
         try:
             with connection:
                 with cursor:
-                    current_app.logger.info("updating")
                     cursor.execute("""UPDATE campaign SET (name, description, image, amount_requested) =  
                                       (%s, %s, %s, %s) WHERE id=%s;""",
                                    (form.name.data, form.description.data, form.image.data,
@@ -104,17 +103,17 @@ def view_campaign(id):
             cursor = get_cursor()
             with connection:
                 with cursor:
-                    current_app.logger.info("selecting token")
                     cursor.execute("""
                         SELECT stripe_token FROM user_profile WHERE user_account_id=%s
                     """, (session['user_id'],))
 
-                    source = cursor.fetchone()[0]
+                    s = cursor.fetchone()[0]
+                    customer = stripe.Customer.retrieve(s)
                     charge = stripe.Charge.create(
-                        amount=int(form.amount.data*100),
+                        amount=100,
                         currency="sgd",
-                        source=source,
-                        description="Donation."
+                        source=customer['default_source'],
+                        customer=customer['id']
                     )
 
                     cursor.execute("""
@@ -122,13 +121,14 @@ def view_campaign(id):
                         VALUES (%s, %s) RETURNING id;
                     """, (charge['id'], form.amount.data))
 
-                    transaction_id = str(cursor.fetchone()[0])
+                    transaction_id = cursor.fetchone()[0]
 
                     cursor.execute("""
                         INSERT INTO campaign_relation(user_account_id, campaign_id, transaction_id, user_role) 
-                        VALUES (%s, %s, %s, 'pledged')   
+                        VALUES (%s, %s, %s, %s)   
                     """, (id, form.campaign_id.data, transaction_id, 'pledged'))
 
+                    flash('Successfully donated!', 'success')
         except Exception as e:
             current_app.logger.error(e)
             flash(e, 'error')
