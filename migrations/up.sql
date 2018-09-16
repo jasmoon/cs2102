@@ -54,7 +54,6 @@ CREATE TABLE IF NOT EXISTS campaign(
 DROP TRIGGER IF EXISTS update_timestamp ON campaign;
 CREATE TRIGGER update_timestamp BEFORE UPDATE ON campaign FOR EACH ROW EXECUTE PROCEDURE trigger_update_timestamp();
 
-
 DO $$ BEGIN
   CREATE TYPE roles AS ENUM('owner', 'watching', 'pledged');
   EXCEPTION
@@ -79,4 +78,3 @@ CREATE TABLE IF NOT EXISTS campaign_relation(
     NOT (user_role = 'pledged' AND transaction_id IS NULL)
   )
 );
-

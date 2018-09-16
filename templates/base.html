@@ -1,27 +1,48 @@
 <!doctype html>
 <head>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <title>{% block title %}{% endblock %}</title>
 </head>
 
-<nav>
-    <ul>
-        {% if g.user %}
-        <li><span>{{ g.user['id'] }}</span>
-        <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+<div id="app">
+    <v-app light>
+        <v-toolbar color="grey" dark>
+            <v-toolbar-title v-text="ILOVECS2102"></v-toolbar-title>
+            <v-spacer></v-spacer>
+            {% if g.user %}
+                <v-btn depressed color='orange'>My Profile</v-btn>
+                <v-btn depressed color='orange' href="{{ url_for('auth.logout')}}">Log Out</v-btn>
             {% else %}
-        <li><a href="{{ url_for('auth.register') }}">Register</a>
-        <li><a href="{{ url_for('auth.login') }}">Log In</a>
+                <v-btn depressed color='orange' href="{{ url_for('auth.register') }}">Register</v-btn>
+                <v-btn depressed color='orange' href="{{ url_for('auth.login') }}">Login</v-btn>
             {% endif %}
-    </ul>
-</nav>
+        </v-toolbar>
+        {% for message in get_flashed_messages() if message is not none%}
+            <v-alert :value="true" type="warning" dismissible class="flash">{{ message }}</v-alert>
+        {% endfor %}
+        {% block content %}
+        <v-content>
+            <v-container fluid fill-width>
+                <v-layout child-flex id="campaign_gallery"></v-layout>
+            </v-container>
+        </v-content>
+        {% endblock %}
+    </v-app>
+</div>
 
-<section class="content">
-    <header>
-        {% block header %}{% endblock %}
-    </header>
-    {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-    {% endfor %}
-    {% block content %}{% endblock %}
-</section>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: ()=> ({
+        }),
+        created: function () {
+                document.getElementById("campaign_gallery").innerHTML = '<object type="text/html" data=' +
+                    '"/campaign/gallery"></object>'
+        }
+    })
+</script>
 </html>

@@ -60,7 +60,7 @@ def edit_campaign(id):
 
     if owner_id != session['user_id']:
         flash("You cannot edit a campaign you don't own!", 'error')
-        return redirect(url_for("campaign.view_campaign", id))
+        return redirect(url_for("campaign.view_campaign", id=id))
 
     if form.validate_on_submit():
         try:
@@ -110,7 +110,7 @@ def view_campaign(id):
                     s = cursor.fetchone()[0]
                     customer = stripe.Customer.retrieve(s)
                     charge = stripe.Charge.create(
-                        amount=100,
+                        amount=int(form.amount.data*100),
                         currency="sgd",
                         source=customer['default_source'],
                         customer=customer['id']
@@ -136,3 +136,28 @@ def view_campaign(id):
     flash(form.errors, 'error')
     return render_template("campaign/campaign.html", form=form, campaign=campaign)
 
+
+@bp.route('/gallery', methods=('GET',))
+def display_gallery():
+    cursor = get_cursor()
+    try:
+        cursor.execute(
+            'SELECT name, description, image, amount_requested FROM campaign ' +
+            'ORDER BY amount_requested DESC LIMIT 3'
+        )
+    except Exception as e:
+        current_app.logger.error(e)
+
+    # make list to store the campaigns
+    campaign_list = []
+    for row in cursor:
+        campaign_list.append(CampaignToDisplay(row['name'], row['description'], row['image'], row['amount_requested']))
+    return render_template("campaign/gallery.html", campaign_list=campaign_list)
+
+
+class CampaignToDisplay(object):
+    def __init__(self, name=None, description=None, job=None, amount_request=None):
+        self.name = name
+        self.description = description
+        self.image = job
+        self.amount_request = amount_request

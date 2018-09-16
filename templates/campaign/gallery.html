@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<v-flex align-center>
+    <h1 class="text-sm-center">Featured Campaigns</h1>
+</v-flex>
+{% for campaign_in_gallery in campaign_list if campaign_in_gallery is not none %}
+    <v-card>
+        <v-card-title>
+            <h3>{{ campaign_in_gallery.name }}</h3>
+        </v-card-title>
+        <v-card-text>{{ campaign_in_gallery.description }}</v-card-text>
+    </v-card>
+{% endfor %}
