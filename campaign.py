@@ -84,19 +84,36 @@ def view_campaign(id):
     cursor = get_cursor()
     form = DonationForm()
     campaign = None
-    try:
-        cursor.execute("""
-            SELECT c.id AS campaign_id, c.name, c.description, c.image, c.amount_requested, c.date_created, 
-            c.last_modified, up.id AS owner_id, up.first_name, up.last_name, up.profile_image, up.description 
-            FROM campaign c
-            INNER JOIN campaign_relation cr on c.id = cr.campaign_id
-            INNER JOIN user_account ua on cr.user_account_id = ua.id
-            INNER JOIN user_profile up on ua.id = up.user_account_id where c.id = %s;
-        """, (id,))
-        campaign = cursor.fetchone()
-    except Exception as e:
-        current_app.logger.error(e)
+    amount_donated = None
+    percentage = None
 
+    def setup():
+        nonlocal campaign, amount_donated, percentage
+        try:
+            cursor.execute("""
+                SELECT c.id AS campaign_id, c.name, c.description, c.image, c.amount_requested, c.date_created, 
+                c.last_modified, up.id AS owner_id, up.first_name, up.last_name, up.profile_image, c.description 
+                FROM campaign c
+                INNER JOIN campaign_relation cr on c.id = cr.campaign_id
+                INNER JOIN user_account ua on cr.user_account_id = ua.id
+                INNER JOIN user_profile up on ua.id = up.user_account_id where c.id = %s;
+            """, (id,))
+
+            campaign = cursor.fetchone()
+            campaign["description"] = campaign["description"].replace('\\n', '<br><br>')
+            cursor.execute("""
+                SELECT SUM(amount)
+                FROM campaign c INNER JOIN campaign_relation cr ON c.id = cr.campaign_id
+                INNER JOIN transaction t ON t.id = cr.transaction_id WHERE user_role='pledged' AND c.id=%s;
+            """, (id,))
+
+            amount_donated = cursor.fetchone()[0]
+            percentage = (Decimal(amount_donated.replace(",","").replace("$","")) / Decimal(campaign['amount_requested'].replace(",","").replace("$",""))) *100
+
+        except Exception as e:
+            current_app.logger.error(e)
+
+    setup()
     if form.validate_on_submit():
         try:
             connection = get_connection()
@@ -104,35 +121,30 @@ def view_campaign(id):
             with connection:
                 with cursor:
                     cursor.execute("""
-                        SELECT stripe_token FROM user_profile WHERE user_account_id=%s
+                        SELECT credit_card FROM user_profile WHERE user_account_id=%s
                     """, (session['user_id'],))
 
-                    s = cursor.fetchone()[0]
-                    customer = stripe.Customer.retrieve(s)
-                    charge = stripe.Charge.create(
-                        amount=100,
-                        currency="sgd",
-                        source=customer['default_source'],
-                        customer=customer['id']
-                    )
+                    cc_number = cursor.fetchone()[0]
 
                     cursor.execute("""
-                        INSERT INTO stripe_transaction(stripe_transaction_id, amount) 
+                        INSERT INTO transaction(credit_card, amount) 
                         VALUES (%s, %s) RETURNING id;
-                    """, (charge['id'], form.amount.data))
+                    """, (cc_number, form.amount.data))
 
                     transaction_id = cursor.fetchone()[0]
 
                     cursor.execute("""
                         INSERT INTO campaign_relation(user_account_id, campaign_id, transaction_id, user_role) 
                         VALUES (%s, %s, %s, %s)   
-                    """, (id, form.campaign_id.data, transaction_id, 'pledged'))
+                    """, (session['user_id'], form.campaign_id.data, transaction_id, 'pledged'))
 
                     flash('Successfully donated!', 'success')
+                    setup()
+                    return render_template("campaign/campaign.html", form=form, campaign=campaign, amount_donated=amount_donated, percentage=percentage)
         except Exception as e:
             current_app.logger.error(e)
             flash(e, 'error')
 
     flash(form.errors, 'error')
-    return render_template("campaign/campaign.html", form=form, campaign=campaign)
+    return render_template("campaign/campaign.html", form=form, campaign=campaign, amount_donated=amount_donated, percentage=percentage)
 

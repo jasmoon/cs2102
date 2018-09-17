@@ -21,7 +21,7 @@ class RegistrationForm(FlaskForm):
     phone_number = StringField('Phone Number', validators=[DataRequired()])
     profile_image = StringField('Profile Image', validators=[DataRequired(), URL()])
     description = TextAreaField('Short Bio', validators=[DataRequired()])
-    stripe_token = HiddenField("Stripe Token", validators=[DataRequired()])
+    credit_card = StringField("Credit Card Number", validators=[DataRequired()])
 
 
 class ResetForm(FlaskForm):
