@@ -13,8 +13,7 @@
                 <v-toolbar-title>oNUS</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items class="hidden-sm-and-down">
-                    <v-btn flat>Discover</v-btn>
-                    <v-btn flat>Search</v-btn>
+                    <v-btn flat href="{{ url_for('campaign.search_campaigns') }}">Discover</v-btn>
 
                     {% if g.user %}
                     <v-btn flat>Profile</v-btn>
@@ -30,17 +29,16 @@
         </header>
 
         <main>
-            <v-container justify-center align-center>
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                <ul class=flashes>
-                    {% for category, message in messages %}
-                   {%if message%} <v-alert :value="true" type="{{category}}">{{ message }}</v-alert>{%endif%}
-                    {% endfor %}
-                </ul>
-                {% endif %}
-                {% endwith %}
-
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <ul class=flashes>
+                {% for category, message in messages %}
+               {%if message%} <v-alert :value="true" type="{{category}}">{{ message }}</v-alert>{%endif%}
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            <v-container justify-center align-center grid-list-md>
                 {% block content %}{% endblock %}
             </v-container>
         </main>

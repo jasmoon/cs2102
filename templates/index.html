@@ -1,45 +1,27 @@
 {% extends 'base.html' %}
-{% block title %}Search{% endblock %}
+{% block title %}Welcome to oNUS{% endblock %}
 
 {% block content %}
-
-<v-container>
-    {%if search_term is none%}
-    <h1>Look through our campaigns!</h1>
-    {%else%}
-    <h1>Search results for: {{search_term}}</h1>
-    {%endif%}
-
-    <form id="search" method="POST">
-        {{form.csrf_token}}
-        <v-layout xs9 align-space-around justify-center row wrap fill-height>
-            <v-flex xs4>
-                <v-text-field
-                        id="{{ form.search.label.field_id }}"
-                        name="{{ form.search.label.field_id }}"
-                        label="Search"
-                        prepend-icon="search"
-                        clearable
-                ></v-text-field>
-            </v-flex>
-            <v-flex xs2>
-                <v-btn type="submit">Search</v-btn>
+<v-img
+        src="https://images.unsplash.com/photo-1533022544462-adf3bbb1b78f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=56a09599b1d703725d3954727ada8c6a&auto=format&fit=crop&w=2011&q=80&w=1980&h=600"
+>
+    <v-container fill-height class="jumbotron">
+        <v-layout>
+            <v-flex xs6 offset-xs3 text-xs-left>
+                <h1 class="jumbotron-title">Donate to the causes and people you care about</h1>
+                <br>
+                <h3 class="jumbotron-subtext">Check out some of our campaigns below</h3>
+                <br>
+                <br>
+                <v-btn href="" color="success">Create your own campaign</v-btn>
             </v-flex>
         </v-layout>
-    </form>
-    {%if pages%}
-    <v-layout xs9 align-space-around justify-end text-xs-right row wrap fill-height mr-2>
-        <h3>
-        Pages:
-        {%for p in range(pages) %}
-            <a href="{{url_for('campaign.search_campaigns',search_term=search_term, offset=p)}}">{{p+1}}</a>
-        {%endfor%}
-        </h3>
-    </v-layout>
-    {%endif%}
-    <v-layout xs9 align-space-around justify-center row wrap fill-height>
+    </v-container>
+</v-img>
+<v-container>
+    <v-layout xs9  align-space-around justify-center row fill-height>
         {%if campaigns%}{%for campaign in campaigns%}
-        <v-flex xs4>
+        <v-flex xs3>
             <v-card height="100%">
                 <v-img
                         src="{{campaign.image}}"
@@ -48,7 +30,7 @@
                 ></v-img>
 
                 <v-card-title primary-title>
-                    <v-layout column wrap>
+                    <v-layout horizontal wrap>
                         <v-flex xs12>
                             <a href="{{url_for('campaign.view_campaign', id=campaign.campaign_id)}}">
                                 <h3 class="headline mb-0">{{campaign.name}}</h3>
@@ -71,15 +53,11 @@
                 </v-card-title>
             </v-card>
         </v-flex>
-        {%endfor%}
-        {%else%}
-        <v-flex>
-            <h1>No results found!</h1>
-        </v-flex>
-        {%endif%}
+        {%endfor%}{%endif%}
     </v-layout>
 </v-container>
 {% endblock %}
+
 {%block vuedata%}
 donate:false,
 {% for c in campaigns %}
