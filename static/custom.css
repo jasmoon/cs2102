@@ -3,6 +3,11 @@ body{
 }
 
 
+.flashes{
+    padding-left:0px!important;
+}
+
+
 .v-toolbar{
     background-color: #014869!important;
 }
