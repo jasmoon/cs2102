@@ -14,38 +14,65 @@
 
 {% block content %}
 {% if campaign is not none %}
-<section>
-    <h1>Campaign Info</h1>
-    <p>{{ campaign.name }}</p>
-    <p>{{ campaign.description }}</p>
-    <p>{{ campaign.image }}</p>
-    <p>{{ campaign.amount_requested }}</p>
-    <p>{{ campaign.date_created}}</p>
-    <p>{{ campaign.last_modified }}</p>
-    <hr>
-    <h1>Owner Info</h1>
-    <p>{{ campaign.owner_id }}</p>
-    <p>{{ campaign.first_name }}</p>
-    <p>{{ campaign.last_name }}</p>
-    <p>{{ campaign.profile_image }}</p>
-    <p>{{ campaign.description }}</p>
 
-    {% if campaign.owner_id != g.user['id'] %}
-    <hr>
-    <h1>Donation Form</h1>
-    <form method="post">
-        {{ form.csrf_token }}
-        {{ form.campaign_id(value=campaign.campaign_id) }}
-        <p>{{ form.amount.label }} {{ form.amount }}</p>
+<v-layout>
+    <v-flex xs12 sm6 offset-sm3>
+        <v-card>
+            <v-img
+                    src="https://source.unsplash.com/random/900x300"
+                    height="300px"
+                    aspect-ratio="2.75"
+            ></v-img>
 
-        <input type="submit">
-    </form>
-    {% elif campaign.owner_id == g.user['id'] %}
-        <a href="{{ url_for('campaign.edit_campaign', id=campaign.campaign_id) }}"> Edit</a>
-    {% endif %}
+            <v-card-title primary-title>
+                <div>
+                    <h3 class="headline mb-0">{{campaign.name}}</h3>
+                    <div>{% autoescape false %}{{campaign.description}}{% endautoescape %}</div>
+                    <br>
+                    <div>
+                        <h4>Amount donated: {{amount_donated}} out of {{campaign.amount_requested}}</h4>
+                        <v-progress-linear v-model="percentage"
+                        {%if percentage > 100 %} color="success" {%endif%}
+                        ></v-progress-linear>
+                    </div>
+                </div>
+            </v-card-title>
+
+            <v-card-actions>
+                <v-btn flat outline color="orange" v-on:click="donate = !donate">Support this!</v-btn>
+                <v-spacer></v-spacer>
+                <v-btn icon @click="donate = !donate">
+                    <v-icon v-if="donate"> keyboard_arrow_down</v-icon>
+                    <v-icon v-else="donate"> keyboard_arrow_up</v-icon>
+                </v-btn>
+            </v-card-actions>
+
+            <v-slide-y-transition>
+                <v-card-text v-show="donate">
+                    <form method="post">
+                        {{ form.csrf_token }}
+                        {{ form.campaign_id(value=campaign.campaign_id) }}
+                        <v-text-field
+                                label="{{ form.amount.label.text }}"
+                                id="{{ form.amount.label.field_id }}"
+                                name="{{ form.amount.label.field_id }}"
+                                prefix="$"
+                        ></v-text-field>
+                        <v-btn type="submit">Donate now!</v-btn>
+                    </form>
+                </v-card-text>
+            </v-slide-y-transition>
+        </v-card>
+    </v-flex>
+</v-layout>
 </section>
 
 {% else %}
     <p>Campaign not found!</p>
 {% endif %}
 {% endblock %}
+
+{%block vuedata%}
+donate:false,
+percentage:{{percentage}}
+{%endblock%}

@@ -1,48 +1,62 @@
 <!doctype html>
 <head>
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='roboto.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vuetify.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='custom.css')}}">
     <title>{% block title %}{% endblock %}</title>
 </head>
+<body>
+    <div id="app">
+        <header>
+            <v-toolbar flat dark>
+                <v-toolbar-title>oNUS</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-toolbar-items class="hidden-sm-and-down">
+                    <v-btn flat>Discover</v-btn>
+                    <v-btn flat>Search</v-btn>
 
-<div id="app">
-    <v-app light>
-        <v-toolbar color="grey" dark>
-            <v-toolbar-title v-text="ILOVECS2102"></v-toolbar-title>
-            <v-spacer></v-spacer>
-            {% if g.user %}
-                <v-btn depressed color='orange'>My Profile</v-btn>
-                <v-btn depressed color='orange' href="{{ url_for('auth.logout')}}">Log Out</v-btn>
-            {% else %}
-                <v-btn depressed color='orange' href="{{ url_for('auth.register') }}">Register</v-btn>
-                <v-btn depressed color='orange' href="{{ url_for('auth.login') }}">Login</v-btn>
-            {% endif %}
-        </v-toolbar>
-        {% for message in get_flashed_messages() if message is not none%}
-            <v-alert :value="true" type="warning" dismissible class="flash">{{ message }}</v-alert>
-        {% endfor %}
-        {% block content %}
-        <v-content>
-            <v-container fluid fill-width>
-                <v-layout child-flex id="campaign_gallery"></v-layout>
+                    {% if g.user %}
+                    <v-btn flat>Profile</v-btn>
+                    <v-btn flat href="{{ url_for('auth.logout') }}">Logout</v-btn>
+
+                    {% else %}
+                    <v-btn flat href="{{ url_for('auth.register') }}">Register</v-btn>
+                    <v-btn flat href="{{ url_for('auth.login') }}">Login</v-btn>
+                    {% endif %}
+                    <v-btn outline href="{{ url_for('campaign.create_campaign') }}">Start a Campaign</v-btn>
+                </v-toolbar-items>
+            </v-toolbar>
+        </header>
+
+        <main>
+            <v-container justify-center align-center>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <ul class=flashes>
+                    {% for category, message in messages %}
+                   {%if message%} <v-alert :value="true" type="{{category}}">{{ message }}</v-alert>{%endif%}
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+
+                {% block content %}{% endblock %}
             </v-container>
-        </v-content>
-        {% endblock %}
-    </v-app>
-</div>
+        </main>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
-<script>
-    new Vue({
-        el: '#app',
-        data: ()=> ({
-        }),
-        created: function () {
-                document.getElementById("campaign_gallery").innerHTML = '<object type="text/html" data=' +
-                    '"/campaign/gallery"></object>'
-        }
-    })
-</script>
+    <script src="{{ url_for('static', filename='vue.js') }}"></script>
+    <script src="{{ url_for('static', filename='vuetify.js') }}"></script>
+    {% block stripe %}{% endblock %}
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                {%block vuedata%}{%endblock%}
+            }
+        })
+    </script>
+</body>
+
 </html>
