@@ -4,5 +4,5 @@ DROP TABLE transaction CASCADE;
 DROP TABLE user_account CASCADE;
 DROP TABLE user_profile CASCADE;
 DROP FUNCTION trigger_update_timestamp();
-DROP FUNCTION update_last_login();
+DROP FUNCTION update_last_login(integer);
 DROP TYPE roles;

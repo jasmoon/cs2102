@@ -1,14 +1,13 @@
-import stripe
+import math
 from flask import current_app, g, Blueprint, session, render_template, redirect, url_for, flash
 from decimal import Decimal
 
 from auth import login_required
 from database import get_connection, get_cursor
-from forms import CampaignCreationForm, CampaignEditForm, DonationForm
+from forms import CampaignCreationForm, CampaignEditForm, DonationForm, SearchForm
 
 
 bp = Blueprint('campaign', __name__, url_prefix='/campaign')
-stripe.api_key = "sk_test_aWtKLQym8glXQBvFQrfYvI1Z"
 
 
 @bp.route('/create', methods=('GET', 'POST'))
@@ -86,34 +85,38 @@ def view_campaign(id):
     campaign = None
     amount_donated = None
     percentage = None
+    donations = None
 
     def setup():
-        nonlocal campaign, amount_donated, percentage
+        nonlocal campaign, amount_donated, percentage, donations
         try:
             cursor.execute("""
                 SELECT c.id AS campaign_id, c.name, c.description, c.image, c.amount_requested, c.date_created, 
-                c.last_modified, up.id AS owner_id, up.first_name, up.last_name, up.profile_image, c.description 
+                c.last_modified, up.id AS owner_id, up.first_name, up.last_name, up.profile_image, 
+                up.description AS owner_description, 
+                get_total_donations(c.id) AS amount_donated,
+                ceil((get_total_donations(c.id)/c.amount_requested)*100) AS percentage
                 FROM campaign c
                 INNER JOIN campaign_relation cr on c.id = cr.campaign_id
                 INNER JOIN user_account ua on cr.user_account_id = ua.id
-                INNER JOIN user_profile up on ua.id = up.user_account_id where c.id = %s;
+                INNER JOIN user_profile up on ua.id = up.user_account_id WHERE c.id = %s AND cr.user_role='owner';
             """, (id,))
 
             campaign = cursor.fetchone()
-            campaign["description"] = campaign["description"].replace('\\n', '<br><br>')
+
             cursor.execute("""
-                SELECT SUM(amount)
+                SELECT up.first_name, up.last_name, up.profile_image, t.amount
                 FROM campaign c INNER JOIN campaign_relation cr ON c.id = cr.campaign_id
-                INNER JOIN transaction t ON t.id = cr.transaction_id WHERE user_role='pledged' AND c.id=%s;
+                INNER JOIN transaction t ON t.id = cr.transaction_id
+                INNER JOIN user_profile up ON cr.user_account_id = up.user_account_id
+                WHERE user_role='pledged' AND c.id=%s ORDER BY t.date_created DESC LIMIT 10;
             """, (id,))
 
-            amount_donated = cursor.fetchone()[0]
-            percentage = (Decimal(amount_donated.replace(",","").replace("$","")) / Decimal(campaign['amount_requested'].replace(",","").replace("$",""))) *100
+            donations = cursor.fetchall()
 
         except Exception as e:
             current_app.logger.error(e)
 
-    setup()
     if form.validate_on_submit():
         try:
             connection = get_connection()
@@ -142,36 +145,70 @@ def view_campaign(id):
 
                     flash('Successfully donated!', 'success')
                     setup()
-                    return render_template("campaign/campaign.html", form=form, campaign=campaign, amount_donated=amount_donated, percentage=percentage)
+                    return render_template("campaign/campaign.html",
+                                           form=form, campaign=campaign, donations=donations)
         except Exception as e:
             current_app.logger.error(e)
             flash(e, 'error')
 
     flash(form.errors, 'error')
-    return render_template("campaign/campaign.html", form=form, campaign=campaign, amount_donated=amount_donated, percentage=percentage)
+    setup()
+    return render_template("campaign/campaign.html",
+                           form=form, campaign=campaign, donations=donations)
 
 
-@bp.route('/gallery', methods=('GET',))
-def display_gallery():
+@bp.route('/search/', methods=('GET', 'POST'), defaults={'offset': 0})
+@bp.route('/search/<int:offset>', methods=('GET', 'POST'))
+def search_campaigns(offset):
     cursor = get_cursor()
-    try:
-        cursor.execute(
-            'SELECT name, description, image, amount_requested FROM campaign ' +
-            'ORDER BY amount_requested DESC LIMIT 3'
-        )
-    except Exception as e:
-        current_app.logger.error(e)
+    form = SearchForm()
+    pages = None
 
-    # make list to store the campaigns
-    campaign_list = []
-    for row in cursor:
-        campaign_list.append(CampaignToDisplay(row['name'], row['description'], row['image'], row['amount_requested']))
-    return render_template("campaign/gallery.html", campaign_list=campaign_list)
+    if form.validate_on_submit():
+        current_app.logger.info("searching")
+        query = " & ".join(form.search.data.split(' '))
+        current_app.logger.info("query: " + query)
+        cursor.execute("""
+            SELECT c.name, c.description, c.image, c.id AS campaign_id, get_total_donations(c.id) AS amount_donated, 
+            c.amount_requested, ceil((get_total_donations(c.id)/c.amount_requested)*100) AS percentage
+            FROM campaign c
+            INNER JOIN campaign_relation cr ON c.id = cr.campaign_id
+            INNER JOIN user_account ua ON cr.user_account_id = ua.id
+            INNER JOIN user_profile up ON ua.id = up.user_account_id where cr.user_role='owner'
+            AND to_tsvector('english', 
+            coalesce(c.description, '') || ' ' ||  
+            coalesce(c.name, '') || ' ' || 
+            coalesce(up.first_name, '') || ' ' || 
+            coalesce(up.last_name, ''))
+            @@ to_tsquery('english', %s) ORDER BY ts_rank_cd(
+            to_tsvector('english', 
+            coalesce(c.description, '') || ' ' || 
+            coalesce(c.name, '') || ' ' || 
+            coalesce(up.first_name, '') || ' ' || 
+            coalesce(up.last_name, '')),
+            to_tsquery('english', %s)) DESC;
+        """, (query, query,))
+        campaigns = cursor.fetchall();
+        current_app.logger.info(str(campaigns))
 
+        return render_template("campaign/gallery.html", search_term=form.search.data, campaigns=campaigns, form=form)
 
-class CampaignToDisplay(object):
-    def __init__(self, name=None, description=None, job=None, amount_request=None):
-        self.name = name
-        self.description = description
-        self.image = job
-        self.amount_request = amount_request
+    cursor.execute("""
+        SELECT COUNT(*) FROM campaign;
+    """)
+    pages = math.ceil(cursor.fetchone()[0] / 9)
+
+    cursor.execute("""
+        SELECT c.id AS campaign_id, c.name, c.description, c.image, c.amount_requested, c.date_created,                           
+        c.last_modified, up.id AS owner_id, up.first_name, up.last_name, up.profile_image, 
+        up.description AS owner_description, get_total_donations(c.id) AS amount_donated, 
+        ceil((get_total_donations(c.id)/c.amount_requested)*100) AS percentage  
+        FROM campaign c                                                                                                           
+        INNER JOIN campaign_relation cr on c.id = cr.campaign_id                                                                
+        INNER JOIN user_account ua on cr.user_account_id = ua.id                                                                
+        INNER JOIN user_profile up on ua.id = up.user_account_id WHERE cr.user_role='owner' 
+        ORDER BY c.date_created ASC OFFSET %s ROWS LIMIT 9;
+        """, (offset*9,))
+
+    campaigns = cursor.fetchall()
+    return render_template("campaign/gallery.html", search_term=None, campaigns=campaigns, form=form, pages=pages)

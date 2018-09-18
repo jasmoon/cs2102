@@ -2,8 +2,23 @@ body{
     font-family: Roboto;
 }
 
+
 .v-toolbar{
     background-color: #014869!important;
+}
+
+.jumbotron{
+    background-color: rgba(0, 0, 0, 0.4)!important;
+}
+
+.jumbotron-title{
+    font-size: 56px!important;
+    color: white!important;
+}
+
+.jumbotron-subtext{
+    font-size: 36px!important;
+    color: white!important;
 }
 
 a { color: #1976d2; }

@@ -15,8 +15,8 @@
 {% block content %}
 {% if campaign is not none %}
 
-<v-layout>
-    <v-flex xs12 sm6 offset-sm3>
+<v-layout row>
+    <v-flex xs10>
         <v-card>
             <v-img
                     src="https://source.unsplash.com/random/900x300"
@@ -30,9 +30,9 @@
                     <div>{% autoescape false %}{{campaign.description}}{% endautoescape %}</div>
                     <br>
                     <div>
-                        <h4>Amount donated: {{amount_donated}} out of {{campaign.amount_requested}}</h4>
+                        <h4>Amount donated: {{campaign.amount_donated|default('$0.00', true)}} out of {{campaign.amount_requested}}</h4>
                         <v-progress-linear v-model="percentage"
-                        {%if percentage > 100 %} color="success" {%endif%}
+                        {%if campaign.percentage > 100 %} color="success" {%endif%}
                         ></v-progress-linear>
                     </div>
                 </div>
@@ -40,6 +40,9 @@
 
             <v-card-actions>
                 <v-btn flat outline color="orange" v-on:click="donate = !donate">Support this!</v-btn>
+                {% if g.user['id'] == campaign.owner_id %}
+                <v-btn flat outline color="green" href="{{url_for('campaign.edit_campaign',id=campaign.campaign_id)}}">Edit Campaign</v-btn>
+                {% endif %}
                 <v-spacer></v-spacer>
                 <v-btn icon @click="donate = !donate">
                     <v-icon v-if="donate"> keyboard_arrow_down</v-icon>
@@ -64,6 +67,53 @@
             </v-slide-y-transition>
         </v-card>
     </v-flex>
+    <v-flex xs2>
+        <v-card >
+            <v-card-text>
+                <h3 class="headline mb-0">Campaign By:</h3>
+            </v-card-text>
+
+            <v-flex text-xs-center>
+                <v-avatar size=150px><img src="{{campaign.profile_image}}"></v-avatar>
+            </v-flex>
+
+
+            <v-card-title primary-title>
+                <div>
+                    <h3 class="headline mb-0">{{campaign.first_name}} {{campaign.last_name}}</h3>
+                </div>
+            </v-card-title>
+        </v-card>
+        <v-card>
+            <div>
+                <h3>Recent Donations:</h3>
+            </div>
+            <br>
+            {% if donations %}
+            {% for d in donations %}
+            <div>
+                <v-layout>
+                    <v-flex xs3>
+                        <v-card flat>
+                            <v-avatar size=50px>
+                                <img src="{{d.profile_image}}">
+                            </v-avatar>
+                        </v-card>
+                    </v-flex>
+                    <v-spacer></v-spacer>
+                    <v-flex xs8>
+                        <v-card flat>
+                            <h4>{{d.amount}}</h4>
+                            <p>{{d.first_name}} {{d.last_name}}</p>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+        </v-card>
+    </v-flex>
 </v-layout>
 </section>
 
@@ -74,5 +124,5 @@
 
 {%block vuedata%}
 donate:false,
-percentage:{{percentage}}
+percentage:{{campaign.percentage}}
 {%endblock%}
