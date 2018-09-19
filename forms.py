@@ -3,6 +3,10 @@ from wtforms.validators import DataRequired, Email, EqualTo, URL, Optional, Numb
 from wtforms import StringField, PasswordField, HiddenField, TextAreaField, DecimalField
 
 
+class SearchForm(FlaskForm):
+    search = StringField('Search', validators=[DataRequired()])
+
+
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -21,7 +25,7 @@ class RegistrationForm(FlaskForm):
     phone_number = StringField('Phone Number', validators=[DataRequired()])
     profile_image = StringField('Profile Image', validators=[DataRequired(), URL()])
     description = TextAreaField('Short Bio', validators=[DataRequired()])
-    stripe_token = HiddenField("Stripe Token", validators=[DataRequired()])
+    credit_card = StringField("Credit Card Number", validators=[DataRequired()])
 
 
 class ResetForm(FlaskForm):
@@ -36,7 +40,7 @@ class RequestResetForm(FlaskForm):
 
 class CampaignCreationForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    description = TextAreaField('Short bio', validators=[DataRequired()])
+    description = TextAreaField('Description of campaign', validators=[DataRequired()])
     image = StringField('Image', validators=[DataRequired(), URL()])
     amount_requested = DecimalField('Amount Requested', places=2, validators=[DataRequired(),
                                                         NumberRange(min=0, message="Amount must be more than %(min)s")])

@@ -1,6 +1,5 @@
 import functools
 import hashlib
-import stripe
 
 from flask import Blueprint, flash, g, redirect, render_template, current_app, session, url_for, request
 from werkzeug.security import check_password_hash, generate_password_hash, safe_str_cmp
@@ -10,7 +9,6 @@ from database import get_connection, get_cursor
 from forms import LoginForm, RegistrationForm, ResetForm, RequestResetForm
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
-stripe.api_key = "sk_test_aWtKLQym8glXQBvFQrfYvI1Z"
 
 
 def login_required(view):
@@ -47,26 +45,18 @@ def register():
         connection = get_connection()
         cursor = get_cursor()
 
-        # start a transaction to create both the user and its user profile
         error = None
 
         # careful now
         with connection:
             with cursor:
                 try:
-                    current_app.logger.info("adding user account")
                     cursor.execute("INSERT INTO user_account(email, password) VALUES (%s, %s);",
                                    (form.email.data, generate_password_hash(form.password.data)))
 
-                    customer = stripe.Customer.create(
-                        source=form.stripe_token.data,
-                        email=form.email.data
-                    )
-
-                    current_app.logger.info("stripe token is %s" % customer.id)
                     cursor.execute("""INSERT INTO 
                         user_profile(first_name, last_name, address1, address2, postal_code, phone_number, 
-                        profile_image, description, stripe_token, user_account_id) 
+                        profile_image, description, credit_card, user_account_id) 
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s,(SELECT id FROM user_account WHERE email=%s));""",
                                    (
                                        form.first_name.data,
@@ -77,7 +67,7 @@ def register():
                                        form.phone_number.data,
                                        form.profile_image.data,
                                        form.description.data,
-                                       customer.id,
+                                       form.credit_card.data,
                                        form.email.data
                                    )
                     )
@@ -201,17 +191,3 @@ def request_reset():
                     return render_template("auth/request_reset.html", hash=date_hash)
 
     return render_template("auth/request_reset.html", form=form)
-
-
-
-
-
-
-
-
-
-
-
-
-
-

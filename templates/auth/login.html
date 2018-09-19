@@ -7,8 +7,26 @@
 {% block content %}
 <form method="post">
     {{ form.csrf_token }}
-    {{ form.email.label }} {{ form.email }}
-    {{ form.password.label }} {{ form.password }}
-    <input type="submit">
+    <v-container>
+        <v-layout>
+            <v-spacer></v-spacer>
+            <v-flex xs4 pa-2 text-xs-left login-background  class="elevation-12">
+                <v-text-field
+                        label="{{ form.email.label.text }}"
+                        id="{{ form.email.label.field_id }}"
+                        name="{{ form.email.label.field_id }}"
+                ></v-text-field>
+
+                <v-text-field
+                        label="{{ form.password.label.text }}"
+                        id="{{ form.password.label.field_id }}"
+                        name="{{ form.password.label.field_id }}"
+                        :type="'password'"
+                ></v-text-field>
+                <v-btn type="submit">Login</v-btn>
+            </v-flex>
+            <v-spacer></v-spacer>
+        </v-layout>
+    </v-container>
 </form>
 {% endblock %}

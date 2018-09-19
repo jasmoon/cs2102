@@ -1,27 +1,65 @@
 <!doctype html>
 <head>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='roboto.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vuetify.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='custom.css')}}">
     <title>{% block title %}{% endblock %}</title>
 </head>
+<body>
+    <div id="app">
+        <header>
+            <v-toolbar flat dark>
+                <v-toolbar-title>
+                        <v-btn flat href="{{ url_for('index') }}">oNUS</v-btn>
+                </v-toolbar-title>
+                <v-divider class="mx-1" inset vertical>
+                </v-divider>
 
-<nav>
-    <ul>
-        {% if g.user %}
-        <li><span>{{ g.user['id'] }}</span>
-        <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
-            {% else %}
-        <li><a href="{{ url_for('auth.register') }}">Register</a>
-        <li><a href="{{ url_for('auth.login') }}">Log In</a>
+                <v-spacer></v-spacer>
+                <v-toolbar-items class="hidden-sm-and-down">
+                    <v-btn flat href="{{ url_for('campaign.search_campaigns') }}">Discover</v-btn>
+
+                    {% if g.user %}
+                    <v-btn flat>Profile</v-btn>
+                    <v-btn flat href="{{ url_for('auth.logout') }}">Logout</v-btn>
+
+                    {% else %}
+                    <v-btn flat href="{{ url_for('auth.register') }}">Register</v-btn>
+                    <v-btn flat href="{{ url_for('auth.login') }}">Login</v-btn>
+                    {% endif %}
+                    <v-btn outline href="{{ url_for('campaign.create_campaign') }}">Start a Campaign</v-btn>
+                </v-toolbar-items>
+            </v-toolbar>
+        </header>
+
+        <main>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <ul class=flashes>
+                {% for category, message in messages %}
+               {%if message%} <v-alert :value="true" type="{{category}}" dismissible="true">{{ message }}</v-alert>{%endif%}
+                {% endfor %}
+            </ul>
             {% endif %}
-    </ul>
-</nav>
+            {% endwith %}
+            <v-container justify-center align-center grid-list-md>
+                {% block content %}{% endblock %}
+            </v-container>
+        </main>
+    </div>
 
-<section class="content">
-    <header>
-        {% block header %}{% endblock %}
-    </header>
-    {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-    {% endfor %}
-    {% block content %}{% endblock %}
-</section>
+    <script src="{{ url_for('static', filename='vue.js') }}"></script>
+    <script src="{{ url_for('static', filename='vuetify.js') }}"></script>
+    {% block stripe %}{% endblock %}
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                {%block vuedata%}{%endblock%}
+            }
+        })
+    </script>
+</body>
+
 </html>

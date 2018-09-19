@@ -27,7 +27,7 @@ VALUES (1, 1, 2, 'pledged');
 
 SELECT SUM(amount)
 FROM campaign c INNER JOIN campaign_relation cr ON c.id = cr.campaign_id
-INNER JOIN stripe_transaction st ON st.id = cr.transaction_id WHERE user_role='pledged';
+INNER JOIN transaction t ON t.id = cr.transaction_id WHERE user_role='pledged' AND c.id=1;
 
 
 -- Does everything below this fail as expected?
