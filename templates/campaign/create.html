@@ -6,13 +6,36 @@
 
 {% block content %}
 <form method="post">
-
     {{ form.csrf_token }}
-    <p>{{ form.name.label }} {{ form.name }}</p>
-    <p>{{ form.description.label }} {{ form.description }}</p>
-    <p>{{ form.image.label }} {{ form.image }}</p>
-    <p>{{ form.amount_requested.label }} {{ form.amount_requested }}</p>
+    <v-container>
+        <v-layout>
+            <v-flex xs6 offset-xs3 text-xs-left>
+                <v-text-field
+                        label="{{ form.name.label.text }}"
+                        id="{{ form.name.label.field_id }}"
+                        name="{{ form.name.label.field_id }}"
+                ></v-text-field>
 
-    <input type="submit">
+                <v-text-field
+                        label="{{ form.description.label.text }}"
+                        id="{{ form.description.label.field_id }}"
+                        name="{{ form.description.label.field_id }}"
+                ></v-text-field>
+                <v-text-field
+                        label="{{ form.image.label.text }}"
+                        id="{{ form.image.label.field_id }}"
+                        name="{{ form.image.label.field_id }}"
+                ></v-text-field>
+
+                <v-text-field
+                        label="{{ form.amount_requested.label.text }}"
+                        id="{{ form.amount_requested.label.field_id }}"
+                        name="{{ form.amount_requested.label.field_id }}"
+                ></v-text-field>
+                <v-btn type="submit">Submit</v-btn>
+            </v-flex>
+        </v-layout>
+    </v-container>
+
 </form>
 {% endblock %}

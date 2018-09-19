@@ -15,6 +15,9 @@ def create_app():
     import campaign
     app.register_blueprint(campaign.bp)
 
+    # in another app, you might define a separate main index here with
+    # app.route, while giving the blog blueprint a url_prefix, but for
+    # the tutorial the blog will be the main index
     @app.route('/')
     @app.route('/index')
     def index():

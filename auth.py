@@ -191,17 +191,3 @@ def request_reset():
                     return render_template("auth/request_reset.html", hash=date_hash)
 
     return render_template("auth/request_reset.html", form=form)
-
-
-
-
-
-
-
-
-
-
-
-
-
-

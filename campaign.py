@@ -127,7 +127,9 @@ def view_campaign(id):
                         SELECT credit_card FROM user_profile WHERE user_account_id=%s
                     """, (session['user_id'],))
 
+
                     cc_number = cursor.fetchone()[0]
+
 
                     cursor.execute("""
                         INSERT INTO transaction(credit_card, amount) 
