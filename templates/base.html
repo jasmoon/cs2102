@@ -10,12 +10,12 @@
     <div id="app">
         <header>
             <v-toolbar flat dark>
-                <v-toolbar-title>oNUS</v-toolbar-title>
+                <v-toolbar-title>
+                        <v-btn flat href="{{ url_for('index') }}">oNUS</v-btn>
+                </v-toolbar-title>
                 <v-divider class="mx-1" inset vertical>
                 </v-divider>
-                <v-toolbar-items class="hidden-sm-and-down">
-                    <v-btn flat href="{{ url_for('index') }}">Home</v-btn>
-                </v-toolbar-items>
+
                 <v-spacer></v-spacer>
                 <v-toolbar-items class="hidden-sm-and-down">
                     <v-btn flat href="{{ url_for('campaign.search_campaigns') }}">Discover</v-btn>

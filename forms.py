@@ -40,7 +40,7 @@ class RequestResetForm(FlaskForm):
 
 class CampaignCreationForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    description = TextAreaField('Short bio', validators=[DataRequired()])
+    description = TextAreaField('Description of campaign', validators=[DataRequired()])
     image = StringField('Image', validators=[DataRequired(), URL()])
     amount_requested = DecimalField('Amount Requested', places=2, validators=[DataRequired(),
                                                         NumberRange(min=0, message="Amount must be more than %(min)s")])

@@ -5,90 +5,146 @@
 {% endblock %}
 
 {% block content %}
-<form id="registration-form" method="post">
-    {{ form.csrf_token }}
-    <v-container>
-        <v-text-field
-                label="{{ form.email.label.text }}"
-                id="{{ form.email.label.field_id }}"
-                name="{{ form.email.label.field_id }}"
-        ></v-text-field>
 
-        <v-text-field
-                label="{{ form.password.label.text }}"
-                id="{{ form.password.label.field_id }}"
-                name="{{ form.password.label.field_id }}"
-                :type="'password'"
-        ></v-text-field>
+<v-container register-form elevation-12>
+    <form id="registration-form" method="post">
+        {{ form.csrf_token }}
+        <v-spacer></v-spacer>
+        <v-layout row>
+            <v-flex xs-6>
+                <v-text-field
+                        label="{{ form.email.label.text }}"
+                        id="{{ form.email.label.field_id }}"
+                        name="{{ form.email.label.field_id }}"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>
 
-        <v-text-field
-                label="{{ form.password2.label.text }}"
-                id="{{ form.password2.label.field_id }}"
-                name="{{ form.password2.label.field_id }}"
-                :type="'password'"
-        ></v-text-field>
+        <v-layout row>
+            <v-flex xs-6>
+                <v-text-field
+                        label="{{ form.password.label.text }}"
+                        id="{{ form.password.label.field_id }}"
+                        name="{{ form.password.label.field_id }}"
+                        :type="'password'"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>
 
-        <v-text-field
-                label="{{ form.first_name.label.text }}"
-                id="{{ form.first_name.label.field_id }}"
-                name="{{ form.first_name.label.field_id }}"
-        ></v-text-field>
+        <v-layout row>
+            <v-flex xs-6>
+                <v-text-field
+                        label="{{ form.password2.label.text }}"
+                        id="{{ form.password2.label.field_id }}"
+                        name="{{ form.password2.label.field_id }}"
+                        :type="'password'"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>
 
-        <v-text-field
-                label="{{ form.last_name.label.text }}"
-                id="{{ form.last_name.label.field_id }}"
-                name="{{ form.last_name.label.field_id }}"
-        ></v-text-field>
+        <v-layout row>
+            <v-flex xs-6>
+                <v-text-field
+                        label="{{ form.first_name.label.text }}"
+                        id="{{ form.first_name.label.field_id }}"
+                        name="{{ form.first_name.label.field_id }}"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>
 
-        <v-text-field
-                label="{{ form.address1.label.text }}"
-                id="{{ form.address1.label.field_id }}"
-                name="{{ form.address1.label.field_id }}"
-        ></v-text-field>
+        <v-layout row>
+            <v-flex xs-6>
+                <v-text-field
+                        label="{{ form.last_name.label.text }}"
+                        id="{{ form.last_name.label.field_id }}"
+                        name="{{ form.last_name.label.field_id }}"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>
 
-        <v-text-field
-                label="Block (Optional)"
-                id="{{ form.address2.label.field_id }}"
-                name="{{ form.address2.label.field_id }}"
-                hint="Optional"
-        ></v-text-field>
+        <v-layout row>
+            <v-flex xs-6>
+                <v-text-field
+                        label="{{ form.address1.label.text }}"
+                        id="{{ form.address1.label.field_id }}"
+                        name="{{ form.address1.label.field_id }}"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>
 
-        <v-text-field
-                label="{{ form.postal_code.label.text }}"
-                id="{{ form.postal_code.label.field_id }}"
-                name="{{ form.postal_code.label.field_id }}"
-        ></v-text-field>
+        <v-layout row>
+            <v-flex xs-6>
+                <v-text-field
+                        label="Block (Optional)"
+                        id="{{ form.address2.label.field_id }}"
+                        name="{{ form.address2.label.field_id }}"
+                        hint="Optional"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>
 
-        <v-text-field
-                label="{{ form.phone_number.label.text }}"
-                id="{{ form.phone_number.label.field_id }}"
-                name="{{ form.phone_number.label.field_id }}"
-        ></v-text-field>
+        <v-layout row>
+            <v-flex xs-6>
+                <v-text-field
+                        label="{{ form.postal_code.label.text }}"
+                        id="{{ form.postal_code.label.field_id }}"
+                        name="{{ form.postal_code.label.field_id }}"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>
 
-        <v-text-field
-                label="{{ form.profile_image.label.text }}"
-                id="{{ form.profile_image.label.field_id }}"
-                name="{{ form.profile_image.label.field_id }}"
-                hint="A link to your profile image"
-        ></v-text-field>
+        <v-layout row>
+            <v-flex xs-6>
+                <v-text-field
+                        label="{{ form.phone_number.label.text }}"
+                        id="{{ form.phone_number.label.field_id }}"
+                        name="{{ form.phone_number.label.field_id }}"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>
 
-        <v-textarea
-                label="{{ form.description.label.text }}"
-                id="{{ form.description.label.field_id }}"
-                name="{{ form.description.label.field_id }}"
-                hint="Let us know more about you!"
-                full-width
-                single-line
-        ></v-textarea>
+        <v-layout row>
+            <v-flex xs-6>
+                <v-text-field
+                        label="{{ form.profile_image.label.text }}"
+                        id="{{ form.profile_image.label.field_id }}"
+                        name="{{ form.profile_image.label.field_id }}"
+                        hint="A link to your profile image"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>
 
-        <v-text-field
-                label="{{ form.credit_card.label.text }}"
-                id="{{ form.credit_card.label.field_id }}"
-                name="{{ form.credit_card.label.field_id }}"
-                maxlength="16"
-        ></v-text-field>
+        <v-layout row>
+            <v-flex xs-6>
+                <v-textarea
+                        label="{{ form.description.label.text }}"
+                        id="{{ form.description.label.field_id }}"
+                        name="{{ form.description.label.field_id }}"
+                        hint="Let us know more about you!"
+                        full-width
+                        single-line
+                ></v-textarea>
+            </v-flex>
+        </v-layout>
 
-        <v-btn type="submit">Register</v-btn>
-    </v-container>
-</form>
+        <v-layout row>
+            <v-flex xs-6>
+                <v-text-field
+                        label="{{ form.credit_card.label.text }}"
+                        id="{{ form.credit_card.label.field_id }}"
+                        name="{{ form.credit_card.label.field_id }}"
+                        maxlength="16"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>
+
+        <v-layout row>
+            <v-flex xs-6>
+                <v-btn type="submit">Register</v-btn>
+            </v-flex>
+        </v-layout>
+        <v-spacer></v-spacer>
+    </form>
+</v-container>
+
 {% endblock %}

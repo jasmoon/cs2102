@@ -2,6 +2,12 @@ body{
     font-family: Roboto;
 }
 
+.register-form{
+    max-width:800px;
+}
+.login-background{
+    background-color: rgba(67, 151, 189, 0.16) !important
+}
 
 .flashes{
     padding-left:0px!important;

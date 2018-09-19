@@ -9,7 +9,8 @@
     {{ form.csrf_token }}
     <v-container>
         <v-layout>
-            <v-flex xs4 offset-xs4 text-xs-left>
+            <v-spacer></v-spacer>
+            <v-flex xs4 pa-2 text-xs-left login-background  class="elevation-12">
                 <v-text-field
                         label="{{ form.email.label.text }}"
                         id="{{ form.email.label.field_id }}"
@@ -24,6 +25,7 @@
                 ></v-text-field>
                 <v-btn type="submit">Login</v-btn>
             </v-flex>
+            <v-spacer></v-spacer>
         </v-layout>
     </v-container>
 </form>

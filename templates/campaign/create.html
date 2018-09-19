@@ -5,22 +5,25 @@
 {% endblock %}
 
 {% block content %}
+
 <form method="post">
     {{ form.csrf_token }}
-    <v-container>
+    <v-container elevation-12  register-form>
         <v-layout>
-            <v-flex xs6 offset-xs3 text-xs-left>
+            <v-flex text-xs-left>
                 <v-text-field
                         label="{{ form.name.label.text }}"
                         id="{{ form.name.label.field_id }}"
                         name="{{ form.name.label.field_id }}"
                 ></v-text-field>
-
-                <v-text-field
+                <v-textarea
                         label="{{ form.description.label.text }}"
                         id="{{ form.description.label.field_id }}"
                         name="{{ form.description.label.field_id }}"
-                ></v-text-field>
+                        hint="Let us know more about the campaign!"
+                        full-width
+                        single-line
+                ></v-textarea>
                 <v-text-field
                         label="{{ form.image.label.text }}"
                         id="{{ form.image.label.field_id }}"
