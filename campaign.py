@@ -166,7 +166,7 @@ def search_campaigns(offset):
 
     if form.validate_on_submit():
         current_app.logger.info("searching")
-        query = " & ".join(form.search.data.split(' '))
+        query = form.search.data
         current_app.logger.info("query: " + query)
         cursor.execute("""
             SELECT c.name, c.description, c.image, c.id AS campaign_id, get_total_donations(c.id) AS amount_donated, 
@@ -175,18 +175,8 @@ def search_campaigns(offset):
             INNER JOIN campaign_relation cr ON c.id = cr.campaign_id
             INNER JOIN user_account ua ON cr.user_account_id = ua.id
             INNER JOIN user_profile up ON ua.id = up.user_account_id where cr.user_role='owner'
-            AND to_tsvector('english', 
-            coalesce(c.description, '') || ' ' ||  
-            coalesce(c.name, '') || ' ' || 
-            coalesce(up.first_name, '') || ' ' || 
-            coalesce(up.last_name, ''))
-            @@ to_tsquery('english', %s) ORDER BY ts_rank_cd(
-            to_tsvector('english', 
-            coalesce(c.description, '') || ' ' || 
-            coalesce(c.name, '') || ' ' || 
-            coalesce(up.first_name, '') || ' ' || 
-            coalesce(up.last_name, '')),
-            to_tsquery('english', %s)) DESC;
+            AND  c.tsv || up.tsv @@ plainto_tsquery('english', %s) 
+            ORDER BY ts_rank_cd(c.tsv || up.tsv, plainto_tsquery('english', %s)) DESC;
         """, (query, query,))
         campaigns = cursor.fetchall();
         current_app.logger.info(str(campaigns))
