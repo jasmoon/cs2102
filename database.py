@@ -6,7 +6,7 @@ from flask import current_app, g
 
 def get_connection():
     if 'connection' not in g:
-        g.connection = psycopg2.connect(dbname="postgres", user="postgres", password="werule2407", host="localhost")
+        g.connection = psycopg2.connect(dbname="cs2102", user="cs2102", password="cs2102pass", host="localhost")
 
     return g.connection
 
