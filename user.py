@@ -42,16 +42,23 @@ def edit_user_profile(id):
 
 @bp.route('/<int:id>', methods=('GET', 'POST'))
 @login_required
-def view_user_profile(id) :
-    cursor = get_cursor()           # allows interaction with DB by executing and fetching
+def view_user_profile(id):
+    cursor = get_cursor()
     cursor.execute("""SELECT up.first_name, up.last_name, up.address1, up.address2, up.postal_code, up.phone_number, up.profile_image, up.description, up.credit_card
                       FROM user_profile up
                       WHERE id=%s;""", (id,))
-    curr_user = cursor.fetchone() # fetch one row from the cursor.execute()
-    curr_user = dict(zip(list(curr_user._index.keys()), list(curr_user)))
-    current_app.logger.info(curr_user)
+    curr_user = cursor.fetchone()
 
-    return render_template("user/user_profile.html", user_info=curr_user, id=id)
+    cursor.execute("""
+                SELECT c.id, c.name, c.image AS campaign_image, c.date_created 
+                FROM user_profile up INNER JOIN campaign_relation cr ON cr.user_account_id = up.user_account_id
+                INNER JOIN campaign c ON c.id = cr.campaign_id
+                WHERE up.user_account_id=%s AND user_role='owner' ORDER BY c.date_created DESC LIMIT 10;
+            """, (id,))
+
+    campaigns = cursor.fetchall()
+
+    return render_template("user/user_profile.html", user_info=curr_user, id=id, campaigns=campaigns)
 
 
 @bp.route('/public_profile/<int:id>', methods=('GET',))

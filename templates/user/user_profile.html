@@ -9,10 +9,11 @@
     <v-layout row justify-center>
         <v-flex xs10>
             <v-card>
-
                 <v-img
                         src="{{ user_info.profile_image }}"
-                        aspect-ratio="1.333"
+                        height="400px"
+                        aspect-ratio="1.3333"
+                        position="left"
                         contain>
                     <v-layout pa-2 column fill-height class = "lightbox white--text">
                         <v-spacer></v-spacer>
@@ -23,12 +24,12 @@
                 </v-img>
                 <br>
                 <v-textarea
-                        label = "Short Bio:"
-                        value = "{{ user_info.description }}"
-                        outline
-                        auto-grow
-                        no-resize
-                        readonly
+                    label = "Short Bio:"
+                    value = "{{ user_info.description }}"
+                    outline
+                    auto-grow
+                    no-resize
+                    readonly
                 ></v-textarea>
 
                 <v-text-field
@@ -46,25 +47,49 @@
                 ></v-text-field>
 
                 <v-text-field
-                        label = "Postal Code:"
-                        value = "{{ user_info.postal_code }}"
-                        outline
-                        readonly
+                    label = "Postal Code:"
+                    value = "{{ user_info.postal_code }}"
+                    outline
+                    readonly
                 ></v-text-field>
 
                 <v-text-field
-                        label = "Phone Number:"
-                        value = "{{ user_info.phone_number }}"
-                        outline
-                        readonly
+                    label = "Phone Number:"
+                    value = "{{ user_info.phone_number }}"
+                    outline
+                    readonly
                 ></v-text-field>
 
                 <v-text-field
-                        label = "Credit Card:"
-                        value = "{{ user_info.credit_card }}"
-                        outline
-                        readonly
+                    label = "Credit Card:"
+                    value = "{{ user_info.credit_card }}"
+                    outline
+                    readonly
                 ></v-text-field>
+
+                <v-card dark>
+                    <v-card-text>
+                        <div class="title font-weight-medium">Campaigns:</div>
+                    </v-card-text>
+                    <v-layout row>
+                        {% for cc in campaigns %}
+                            <v-flex xs2 text-xs-center>
+                                <v-card href="{{ url_for('campaign.view_campaign', id=cc.id) }}" light>
+                                    <v-flex>
+                                        <v-img src="{{cc.campaign_image}}"
+                                               height="90px"
+                                               aspect-ratio="1.20"></v-img>
+                                    </v-flex>
+                                    <v-card-text text-xs-center>
+                                        <span class="body-1 font-weight-thin">{{cc.name}}</span>
+                                    </v-card-text>
+                                </v-card>
+                            </v-flex>
+                        {% endfor %}
+                    </v-layout>
+                    <br>
+                </v-card>
+                <br>
                 <v-btn href="{{url_for('user.edit_user_profile',id=id)}}">Edit</v-btn>
             </v-card>
         </v-flex>
