@@ -69,5 +69,5 @@ class EditUserProfile(FlaskForm):
     postal_code = StringField('Postal Code: ', validators=[])
     phone_number = StringField('Phone Number: ', validators=[DataRequired()])
     profile_image = StringField('Profile Image: ', validators=[DataRequired(), URL()])
-    description = TextAreaField('Short Bio: ', validators=[DataRequired()])
+    description = StringField('Short Bio: ', validators=[DataRequired()])
     credit_card = StringField('Credit Card Number: ', validators=[DataRequired()])
