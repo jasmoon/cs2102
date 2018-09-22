@@ -5,17 +5,15 @@
 {% endblock %}
 
 {% block content %}
-
     <form method="get">
-    <v-layout row>
+    <v-layout row justify-center>
         <v-flex xs10>
             <v-card>
 
                 <v-img
                         src="{{ user_info.profile_image }}"
                         aspect-ratio="1.333"
-                        contain
-                >
+                        contain>
                     <v-layout pa-2 column fill-height class = "lightbox white--text">
                         <v-spacer></v-spacer>
                         <v-flex shrink>
@@ -23,9 +21,7 @@
                         </v-flex>
                     </v-layout>
                 </v-img>
-
                 <br>
-
                 <v-textarea
                         label = "Short Bio:"
                         value = "{{ user_info.description }}"
@@ -63,18 +59,15 @@
                         readonly
                 ></v-text-field>
 
-
                 <v-text-field
                         label = "Credit Card:"
                         value = "{{ user_info.credit_card }}"
                         outline
                         readonly
                 ></v-text-field>
-
+                <v-btn href="{{url_for('user.edit_user_profile',id=id)}}">Edit</v-btn>
             </v-card>
         </v-flex>
     </v-layout>
-        <v-btn href="{{url_for('user_profile.edit_user_profile',id=id)}}">Edit</v-btn>
     </form>
-
 {% endblock %}

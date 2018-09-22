@@ -14,8 +14,8 @@ def create_app():
     app.register_blueprint(auth.bp)
     import campaign
     app.register_blueprint(campaign.bp)
-    import user_profile
-    app.register_blueprint(user_profile.bp)
+    import user
+    app.register_blueprint(user.bp)
 
     # in another app, you might define a separate main index here with
     # app.route, while giving the blog blueprint a url_prefix, but for

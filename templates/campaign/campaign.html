@@ -68,7 +68,7 @@
         </v-card>
     </v-flex>
     <v-flex xs2>
-        <v-card >
+        <v-card href="{{ url_for('user.view_public_profile', id=campaign.owner_id) }}">
             <v-card-text>
                 <h3 class="headline mb-0">Campaign By:</h3>
             </v-card-text>
@@ -77,11 +77,8 @@
                 <v-avatar size=150px><img src="{{campaign.profile_image}}"></v-avatar>
             </v-flex>
 
-
             <v-card-title primary-title>
-                <div>
-                    <h3 class="headline mb-0">{{campaign.first_name}} {{campaign.last_name}}</h3>
-                </div>
+                <h3 class="headline mb-0">{{campaign.first_name}} {{campaign.last_name}}</h3>
             </v-card-title>
         </v-card>
         <v-card>

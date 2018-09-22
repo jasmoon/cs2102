@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% if public_profile is not none %}
+{% block header %}
+    <h1>{% block title %}{{ public_profile.first_name }} {{ public_profile.last_name }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<v-layout row justify-center>
+    <v-flex xs2 text-xs-center>
+        <v-card>
+            <v-flex text-xs-center>
+                <v-avatar size=150px><img src="{{ public_profile.profile_image }}"></v-avatar>
+            </v-flex>
+            <v-card-title class="headline">
+                <div>{{ public_profile.first_name }} {{ public_profile.last_name }}</div>
+            </v-card-title>
+            <v-card-text text-xs-center>
+                <span class="grey--text font-weight-light">{{ public_profile.description }}</span>
+            </v-card-text>
+        </v-card>
+    </v-flex>
+    <v-flex xs8>
+        <v-card>
+            <v-card>
+                <v-card-text>
+                    <div class="title font-weight-medium">Contact Information:</div>
+                    <br>
+                    <div class="body-1">Email: {{ public_profile.owner_email }}</div>
+                </v-card-text>
+            </v-card>
+            {% if campaign_created %}
+            <v-card>
+                <v-card-text>
+                    <div class="title font-weight-medium">Recent campaigns created:</div>
+                </v-card-text>
+                <v-layout row>
+                    {% for cc in campaign_created %}
+                        <v-flex xs2 text-xs-center>
+                            <v-card href="{{ url_for('campaign.view_campaign', id=cc.id) }}">
+                                <v-flex>
+                                    <v-img src="{{cc.campaign_image}}"
+                                           height="90px"
+                                           aspect-ratio="1.20"></v-img>
+                                </v-flex>
+                                <v-card-text text-xs-center>
+                                    <span class="body-1 font-weight-thin">{{cc.name}}</span>
+                                </v-card-text>
+                            </v-card>
+                        </v-flex>
+                    {% endfor %}
+                </v-layout>
+            </v-card>
+            {% endif %}
+            {% if campaign_donated %}
+                <v-card>
+                    <v-card-text>
+                        <h3>Recent campaign donations:</h3>
+                    </v-card-text>
+                    <v-layout row>
+                        {% for cd in campaign_donated %}
+                            <v-flex xs2 text-xs-center href="{{ url_for('campaign.view_campaign', id=cd.id) }}">
+                                <v-card>
+                                    <v-flex>
+                                        <v-img src="{{cd.campaign_image}}"
+                                               height="90px"
+                                               aspect-ratio="1.20"></v-img>
+                                    </v-flex>
+                                    <v-card-text text-xs-center>
+                                        <span class="body-1 font-weight-thin">{{cd.name}}</span>
+                                    </v-card-text>
+                                </v-card>
+                            </v-flex>
+                        {% endfor %}
+                    </v-layout>
+                </v-card>
+            {% endif %}
+        </v-card>
+    </v-flex>
+</v-layout>
+{% endblock %}
+
+{% else %}
+    <h3>Oops, user profile does not exist</h3>
+{% endif %}
+
