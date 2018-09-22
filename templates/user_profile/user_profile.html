@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}View Profile{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <form method="get">
+
+        <p>User Profile: {{ user_info.profile_image }}</p>
+        <p>First Name: {{ user_info.first_name }}</p>
+        <p>Last Name: {{ user_info.last_name }}</p>
+        <p>Address Line 1: {{ user_info.address1 }}</p>
+        <p>Address Line 2: {{ user_info.address2 }}</p>
+        <p>Postal Code: {{ user_info.postal_code }}</p>
+        <p>Phone Number: {{ user_info.phone_number }}</p>
+        <p>Short Bio: {{ user_info.description }}</p>
+        <p>Credit Card: {{ user_info.credit_card }}</p>
+
+        <v-btn href="{{url_for('user_profile.edit_user_profile',id=id)}}">Edit</v-btn>
+    </form>
+
+{% endblock %}

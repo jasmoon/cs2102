@@ -59,3 +59,15 @@ class DonationForm(FlaskForm):
     campaign_id = HiddenField("Campaign ID", validators=[DataRequired()])
     amount = DecimalField('Amount Donating', places=2, validators=[DataRequired(),
                                                        NumberRange(min=0, message="Amount must be more than %(min)s")])
+
+
+class EditUserProfile(FlaskForm):
+    first_name = StringField('First Name: ', validators=[DataRequired()])
+    last_name = StringField('Last Name: ', validators=[DataRequired()])
+    address1 = StringField('Address 1: ', validators=[DataRequired()])
+    address2 = StringField('Address 2: ', validators=[Optional()])
+    postal_code = StringField('Postal Code: ', validators=[])
+    phone_number = StringField('Phone Number: ', validators=[DataRequired()])
+    profile_image = StringField('Profile Image: ', validators=[DataRequired(), URL()])
+    description = TextAreaField('Short Bio: ', validators=[DataRequired()])
+    credit_card = StringField('Credit Card Number: ', validators=[DataRequired()])
