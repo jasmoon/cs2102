@@ -59,3 +59,7 @@ class DonationForm(FlaskForm):
     campaign_id = HiddenField("Campaign ID", validators=[DataRequired()])
     amount = DecimalField('Amount Donating', places=2, validators=[DataRequired(),
                                                        NumberRange(min=0, message="Amount must be more than %(min)s")])
+
+
+class SuspendForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])

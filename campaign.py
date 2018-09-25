@@ -4,8 +4,8 @@ from decimal import Decimal
 
 from auth import login_required
 from database import get_connection, get_cursor
-from forms import CampaignCreationForm, CampaignEditForm, DonationForm, SearchForm
-
+from forms import CampaignCreationForm, CampaignEditForm, DonationForm, SearchForm, SuspendForm
+from werkzeug.security import check_password_hash
 
 bp = Blueprint('campaign', __name__, url_prefix='/campaign')
 
@@ -81,7 +81,8 @@ def edit_campaign(id):
 def view_campaign(id):
     connection = get_connection()
     cursor = get_cursor()
-    form = DonationForm()
+    suspend_form = None
+    donation_form = DonationForm()
     campaign = None
     amount_donated = None
     percentage = None
@@ -117,7 +118,7 @@ def view_campaign(id):
         except Exception as e:
             current_app.logger.error(e)
 
-    if form.validate_on_submit():
+    if donation_form.validate_on_submit():
         try:
             connection = get_connection()
             cursor = get_cursor()
@@ -134,27 +135,64 @@ def view_campaign(id):
                     cursor.execute("""
                         INSERT INTO transaction(credit_card, amount) 
                         VALUES (%s, %s) RETURNING id;
-                    """, (cc_number, form.amount.data))
+                    """, (cc_number, donation_form.amount.data))
 
                     transaction_id = cursor.fetchone()[0]
 
                     cursor.execute("""
                         INSERT INTO campaign_relation(user_account_id, campaign_id, transaction_id, user_role) 
                         VALUES (%s, %s, %s, %s)   
-                    """, (session['user_id'], form.campaign_id.data, transaction_id, 'pledged'))
+                    """, (session['user_id'], donation_form.campaign_id.data, transaction_id, 'pledged'))
 
                     flash('Successfully donated!', 'success')
                     setup()
                     return render_template("campaign/campaign.html",
-                                           form=form, campaign=campaign, donations=donations)
+                                           donation_form=donation_form, campaign=campaign, donations=donations)
         except Exception as e:
             current_app.logger.error(e)
             flash(e, 'error')
 
-    flash(form.errors, 'error')
+    try:
+        cursor.execute(
+        'SELECT ua.account_status FROM user_account ua WHERE id=%s', (session['user_id'],)
+        )
+        account = cursor.fetchone()
+    except Exception as e:
+        current_app.logger.error(e)
+        flash(e, 'error')
+
+    if account is not None and account['account_status'] is 'super':
+        suspend_form = SuspendForm()
+
+        if suspend_form.validate_on_submit():
+            password = suspend_form.password.data
+            try:
+                connection = get_connection()
+                cursor = get_cursor()
+                with connection:
+                    with cursor:
+                        cursor.execute(
+                            'SELECT ua.password FROM user_account WHERE id=%s', (session['user_id'],)
+                        )
+                        admin = cursor.fetchone()
+
+                        if admin is None or not check_password_hash(admin['password'], password):
+                            error = 'Invalid password'
+                        else:
+                            cursor.execute(
+                                ''
+                            )
+                            connection.commit()
+                            flash(suspend_form.errors, 'error')
+
+            except Exception as e:
+                current_app.logger.error(e)
+                flash(e, 'error')
+
+    flash(donation_form.errors, 'error')
     setup()
     return render_template("campaign/campaign.html",
-                           form=form, campaign=campaign, donations=donations)
+                           suspend_form=suspend_form, donation_form=donation_form, campaign=campaign, donations=donations)
 
 
 @bp.route('/search/', methods=('GET', 'POST'), defaults={'offset': 0})
