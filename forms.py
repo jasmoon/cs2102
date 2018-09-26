@@ -61,7 +61,7 @@ class DonationForm(FlaskForm):
                                                        NumberRange(min=0, message="Amount must be more than %(min)s")])
 
 
-class EditUserProfile(FlaskForm):
+class EditUserProfileForm(FlaskForm):
     first_name = StringField('First Name: ', validators=[DataRequired()])
     last_name = StringField('Last Name: ', validators=[DataRequired()])
     address1 = StringField('Address 1: ', validators=[DataRequired()])

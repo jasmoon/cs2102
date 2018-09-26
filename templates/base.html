@@ -21,7 +21,7 @@
                     <v-btn flat href="{{ url_for('campaign.search_campaigns') }}">Discover</v-btn>
 
                     {% if g.user %}
-                    <v-btn flat href="{{ url_for('user.view_user_profile', id=g.user["id"]) }}">Profile</v-btn>
+                    <v-btn flat href="{{ url_for('user.view_edit_user_profile', id=g.user["id"]) }}">Profile</v-btn>
                     <v-btn flat href="{{ url_for('auth.logout') }}">Logout</v-btn>
 
                     {% else %}

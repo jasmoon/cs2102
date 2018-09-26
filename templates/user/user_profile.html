@@ -5,71 +5,121 @@
 {% endblock %}
 
 {% block content %}
-    <form method="get">
-    <v-layout row justify-center>
+{% if user_info is not none %}
+    <v-layout justify-center>
         <v-flex xs10>
             <v-card>
-                <v-img
-                        src="{{ user_info.profile_image }}"
-                        height="400px"
-                        aspect-ratio="1.3333"
-                        position="left"
-                        contain>
-                    <v-layout pa-2 column fill-height class = "lightbox white--text">
-                        <v-spacer></v-spacer>
-                        <v-flex shrink>
-                            <div class="display-3"> {{ user_info.first_name}} {{ user_info.last_name }} </div>
-                        </v-flex>
-                    </v-layout>
-                </v-img>
-                <br>
-                <v-textarea
-                    label = "Short Bio:"
-                    value = "{{ user_info.description }}"
-                    outline
-                    auto-grow
-                    no-resize
-                    readonly
-                ></v-textarea>
+                <v-flex text-xs-left>
+                    <v-avatar size=250px><img src="{{ user_info.profile_image }}"></v-avatar>
+                </v-flex>
 
-                <v-text-field
-                    label = "Address Line 1:"
-                    value = "{{ user_info.address1 }}"
-                    outline
-                    readonly
-                ></v-text-field>
+                <v-layout>
+                    <v-flex>
+                        <v-card-title class="headline">
+                            <div>{{ user_info.first_name }} {{ user_info.last_name }}</div>
+                        </v-card-title>
+                    </v-flex>
+                    <v-flex text-xs-right>
 
-                <v-text-field
-                    label = "Address Line 2:"
-                    value = "{{ user_info.address2 }}"
-                    outline
-                    readonly
-                ></v-text-field>
+                        <form method="post">
+                        {{ form.csrf_token }}
+                        <v-dialog v-model="dialog" max-width="700px">
+                            <v-btn slot="activator" color="orange lighten-1">Edit Profile</v-btn>
+                            <v-card>
+                                <v-card-title>
+                                    <span class="headline">Edit Profile</span>
+                                </v-card-title>
+                                <br>
+                                <v-flex xs10 offset-xs1>
+                                    <v-text-field
+                                            label="{{ form.profile_image.label.text }}"
+                                            id="{{ form.profile_image.label.field_id }}"
+                                            name="{{ form.profile_image.label.field_id }}"
+                                            value="{{ user_info.profile_image }}"
+                                            outline
+                                    ></v-text-field>
+                                    <v-text-field
+                                            label="{{ form.first_name.label.text }}"
+                                            id="{{ form.first_name.label.field_id }}"
+                                            name="{{ form.first_name.label.field_id }}"
+                                            value="{{ user_info.first_name }}"
+                                            outline
+                                    ></v-text-field>
+                                    <v-text-field
+                                            label="{{ form.last_name.label.text }}"
+                                            id="{{ form.last_name.label.field_id }}"
+                                            name="{{ form.last_name.label.field_id }}"
+                                            value="{{ user_info.last_name }}"
+                                            outline
+                                    ></v-text-field>
+                                    <v-text-field
+                                            label="Short Bio:"
+                                            id="{{ form.description.label.field_id }}"
+                                            name="{{ form.description.label.field_id }}"
+                                            value="{{ user_info.description }}"
+                                            outline
+                                    ></v-text-field>
+                                    <v-text-field
+                                            label="{{ form.address1.label.text }}"
+                                            id="{{ form.address1.label.field_id }}"
+                                            name="{{ form.address1.label.field_id }}"
+                                            value="{{ user_info.address1 }}"
+                                            outline
+                                    ></v-text-field>
+                                    <v-text-field
+                                            label="{{ form.address2.label.text }}"
+                                            id="{{ form.address2.label.field_id }}"
+                                            name="{{ form.address2.label.field_id }}"
+                                            value="{{ user_info.address2 }}"
+                                            outline
+                                    ></v-text-field>
+                                    <v-text-field
+                                            label="{{ form.postal_code.label.text }}"
+                                            id="{{ form.postal_code.label.field_id }}"
+                                            name="{{ form.postal_code.label.field_id }}"
+                                            value="{{ user_info.postal_code }}"
+                                            outline
+                                            maxlength="12"
+                                    ></v-text-field>
+                                    <v-text-field
+                                            label="{{ form.phone_number.label.text }}"
+                                            id="{{ form.phone_number.label.field_id }}"
+                                            name="{{ form.phone_number.label.field_id }}"
+                                            value="{{ user_info.phone_number }}"
+                                            outline
+                                            maxlength="20"
+                                    ></v-text-field>
+                                    <v-text-field
+                                            label="{{ form.credit_card.label.text }}"
+                                            id="{{ form.credit_card.label.field_id }}"
+                                            name="{{ form.credit_card.label.field_id }}"
+                                            value="{{ user_info.credit_card }}"
+                                            maxlength="16"
+                                            outline
+                                    ></v-text-field>
+                                    <v-btn type="submit">Submit</v-btn>
+                                </v-flex>
+                            </v-card>
+                        </v-dialog>
+                        </form>
 
-                <v-text-field
-                    label = "Postal Code:"
-                    value = "{{ user_info.postal_code }}"
-                    outline
-                    readonly
-                ></v-text-field>
+                    </v-flex>
+                </v-layout>
+            </v-card>
+            <v-card>
+                <v-data-table :items="user_profile_info" hide-headers hide-actions>
+                    <template slot="items" slot-scope="info">
+                        {% raw %}
+                        <td>{{ info.item.name }}</td>
+                        <td>{{ info.item.detail }}</td>
+                        {% endraw %}
+                    </template>
+                </v-data-table>
 
-                <v-text-field
-                    label = "Phone Number:"
-                    value = "{{ user_info.phone_number }}"
-                    outline
-                    readonly
-                ></v-text-field>
-
-                <v-text-field
-                    label = "Credit Card:"
-                    value = "{{ user_info.credit_card }}"
-                    outline
-                    readonly
-                ></v-text-field>
-
-                <v-card dark>
+                <v-card>
+                    <br>
                     <v-card-text>
-                        <div class="title font-weight-medium">Campaigns:</div>
+                        <div class="title font-weight-medium">My Campaigns:</div>
                     </v-card-text>
                     <v-layout row>
                         {% for cc in campaigns %}
@@ -87,12 +137,32 @@
                             </v-flex>
                         {% endfor %}
                     </v-layout>
-                    <br>
                 </v-card>
-                <br>
-                <v-btn href="{{url_for('user.edit_user_profile',id=id)}}">Edit</v-btn>
             </v-card>
         </v-flex>
     </v-layout>
-    </form>
+{% endif %}
+{% endblock %}
+
+{% block vuedata %}
+    user_profile_info: [
+    {
+    name: 'Short Bio',
+    detail: '{{ user_info.description }}'
+    },{
+    name: 'Address line 1',
+    detail: '{{ user_info.address1 }}'
+    },{
+    name: 'Address line 2',
+    detail: '{{ user_info.address2 }}'
+    },{
+    name: 'Postal Code',
+    detail: '{{ user_info.postal_code }}'
+    },{
+    name: 'Phone Number',
+    detail: '{{ user_info.phone_number }}'
+    },{
+    name: 'Credit Card',
+    detail: '{{ user_info.credit_card }}'
+    }]
 {% endblock %}

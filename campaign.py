@@ -69,7 +69,7 @@ def edit_campaign(id):
                                       (%s, %s, %s, %s) WHERE id=%s;""",
                                    (form.name.data, form.description.data, form.image.data,
                                     form.amount_requested.data, form.campaign_id.data))
-            flash("Succesully updated!", 'success')
+            flash("Successfully updated!", 'success')
             return redirect(url_for("campaign.view_campaign", id=id))
         except Exception as e:
             current_app.logger.error(e)
