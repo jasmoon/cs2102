@@ -1,24 +1,24 @@
 -- User account (all account password is 1234)
 INSERT INTO user_account (email, password, last_login, date_created)
-VALUES ('dillon_dudley@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('lydia_jimenez@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('colt_anderson@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('dawn_everett@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('ryder_mendez@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('tatiana_moses@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('joel_combs@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('freya_marks@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('buckminster_fitzgerald@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('fletcher_myers@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('ima_cherry@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('buckminster_whitfield@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('jordan_short@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('kadeem_shanton@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('mark_nixon@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('jolie_sheppard@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('shelly_hopkins@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('channing_grimes@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-,('rina_mckenzie@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+VALUES ('dillon_dudley@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('lydia_jimenez@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('colt_anderson@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('dawn_everett@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('ryder_mendez@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('tatiana_moses@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('joel_combs@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('freya_marks@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('buckminster_fitzgerald@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('fletcher_myers@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('ima_cherry@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('buckminster_whitfield@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('jordan_short@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('kadeem_shanton@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('mark_nixon@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('jolie_sheppard@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('shelly_hopkins@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('channing_grimes@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
+,('rina_mckenzie@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now())
 ,('september_cohen@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
 
 -- User Profile
