@@ -22,7 +22,7 @@ VALUES ('dillon_dudley@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc
 ,('september_cohen@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
 
 -- User Profile
-INSERT INTO "user_profile" (id, first_name, last_name, address1, address2, postal_code, phone_number, profile_image, description,credit_card)
+INSERT INTO "user_profile" (user_account_id, first_name, last_name, address1, address2, postal_code, phone_number, profile_image, description, credit_card)
 VALUES (1,'Dillon','Dudley','Ap #630-1388 In Street','Bafra','26189','(829) 298-0021', 'https://randomuser.me/api/portraits/women/7.jpg', 'risus. Donec egestas. Duis ac arcu. Nunc mauris. Morbi non sapien molestie orci tincidunt','5253859724873767')
 ,(2,'Lydia','Jimenez','2617 Vitae Av.','Sorbo Serpico','8318 PK','(114) 389-1040', 'https://randomuser.me/api/portraits/men/43.jpg', 'nonummy ipsum non arcu. Vivamus sit amet risus. Donec egestas. Aliquam nec enim. Nunc ut','5297380897614472')
 ,(3,'Colt','Anderson','276-5818 Turpis Street','Tintange','53984','(161) 138-5905', 'https://randomuser.me/api/portraits/men/28.jpg', 'lectus quis massa. Mauris vestibulum, neque sed dictum eleifend, nunc risus varius orci, in','5133451220635308')
@@ -164,7 +164,7 @@ VALUES (18,1,'owner'),(4,2,'owner'),(4,3,'owner'),(5,4,'owner'),(12,5,'owner'),(
 ,(7,89,'owner'),(11,90,'owner'),(7,91,'owner'),(9,92,'owner'),(9,93,'owner'),(12,94,'owner'),(15,95,'owner'),(11,96,'owner')
 ,(11,97,'owner'),(10,98,'owner'),(6,99,'owner'),(5,100,'owner');
 
--- Transaction
+-- Transaction (note that owner of credit card number is not the right user)
 INSERT INTO "transaction" (credit_card,amount)
 VALUES ('5266082080024637','94.23'),('5569292442374323','28.71'),('5253859724873767','76.41'),('5129376918985358','50.87')
 ,('5333386898100847','71.14'),('5104621899610122','61.22'),('5297380897614472','59.03'),('5104621899610122','81.80')
