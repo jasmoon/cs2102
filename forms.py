@@ -59,8 +59,7 @@ class DonationForm(FlaskForm):
     campaign_id = HiddenField("Campaign ID", validators=[DataRequired()])
     amount = DecimalField('Amount Donating', places=2, validators=[DataRequired(),
                                                        NumberRange(min=0, message="Amount must be more than %(min)s")])
-
-
+    
 class EditUserProfileForm(FlaskForm):
     first_name = StringField('First Name: ', validators=[DataRequired()])
     last_name = StringField('Last Name: ', validators=[DataRequired()])
