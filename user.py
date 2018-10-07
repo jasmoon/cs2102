@@ -66,8 +66,8 @@ def view_public_profile(id):
         cursor.execute("""SELECT up.profile_image, up.first_name, up.last_name, 
         up.description, ua.email AS owner_email
         FROM user_profile up INNER JOIN user_account ua ON up.user_account_id = ua.id
-        WHERE up.user_account_id=%s
-        """, str(id))
+        WHERE up.user_account_id=%s;
+        """, (id,))
 
         public_profile = cursor.fetchone()
 
