@@ -1,49 +1,48 @@
 -- User account (all account password is 1234)
 INSERT INTO user_account (email, password, last_login, date_created)
 VALUES ('dillon_dudley@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('lydia_jimenez@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('colt_anderson@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('dawn_everett@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('ryder_mendez@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('tatiana_moses@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('joel_combs@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('freya_marks@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('buckminster_fitzgerald@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('fletcher_myers@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('ima_cherry@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('buckminster_whitfield@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('jordan_short@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('kadeem_shanton@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('mark_nixon@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('jolie_sheppard@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('shelly_hopkins@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('channing_grimes@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('rina_mckenzie@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
-VALUES ('september_cohen@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('lydia_jimenez@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('colt_anderson@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('dawn_everett@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('ryder_mendez@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('tatiana_moses@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('joel_combs@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('freya_marks@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('buckminster_fitzgerald@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('fletcher_myers@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('ima_cherry@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('buckminster_whitfield@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('jordan_short@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('kadeem_shanton@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('mark_nixon@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('jolie_sheppard@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('shelly_hopkins@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('channing_grimes@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('rina_mckenzie@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
+,('september_cohen@test.com', 'pbkdf2:sha256:50000$GsvMXVYh$98eb332735af00dc5fb6246303d3562c0cd714c3085fb9b603b0b9e766e9b5b4', now(), now());
 
 -- User Profile
 INSERT INTO "user_profile" (id, first_name, last_name, address1, address2, postal_code, phone_number, profile_image, description,credit_card)
-VALUES (1,'Dillon','Dudley','Ap #630-1388 In Street','Bafra','26189','(829) 298-0021', 'https://randomuser.me/api/portraits/women/7.jpg', 'risus. Donec egestas. Duis ac arcu. Nunc mauris. Morbi non sapien molestie orci tincidunt','525385 9724873767')
-,(2,'Lydia','Jimenez','2617 Vitae Av.','Sorbo Serpico','8318 PK','(114) 389-1040', 'https://randomuser.me/api/portraits/men/43.jpg', 'nonummy ipsum non arcu. Vivamus sit amet risus. Donec egestas. Aliquam nec enim. Nunc ut','5297 3808 9761 4472')
+VALUES (1,'Dillon','Dudley','Ap #630-1388 In Street','Bafra','26189','(829) 298-0021', 'https://randomuser.me/api/portraits/women/7.jpg', 'risus. Donec egestas. Duis ac arcu. Nunc mauris. Morbi non sapien molestie orci tincidunt','5253859724873767')
+,(2,'Lydia','Jimenez','2617 Vitae Av.','Sorbo Serpico','8318 PK','(114) 389-1040', 'https://randomuser.me/api/portraits/men/43.jpg', 'nonummy ipsum non arcu. Vivamus sit amet risus. Donec egestas. Aliquam nec enim. Nunc ut','5297380897614472')
 ,(3,'Colt','Anderson','276-5818 Turpis Street','Tintange','53984','(161) 138-5905', 'https://randomuser.me/api/portraits/men/28.jpg', 'lectus quis massa. Mauris vestibulum, neque sed dictum eleifend, nunc risus varius orci, in','5133451220635308')
-,(4,'Dawn','Everett','6571 Mauris. St.','Cheyenne','05603','(651) 862-2459', 'https://randomuser.me/api/portraits/women/84.jpg', 'elit pede, malesuada vel, venenatis vel, faucibus id, libero. Donec consectetuer mauris','512937 691898 5358')
+,(4,'Dawn','Everett','6571 Mauris. St.','Cheyenne','05603','(651) 862-2459', 'https://randomuser.me/api/portraits/women/84.jpg', 'elit pede, malesuada vel, venenatis vel, faucibus id, libero. Donec consectetuer mauris','5129376918985358')
 ,(5,'Ryder','Mendez','731-7648 Nec, Avenue','Gubbio','793085','(993) 887-3113', 'https://randomuser.me/api/portraits/men/48.jpg', 'lorem ut aliquam iaculis, lacus pede sagittis augue, eu tempor erat neque non quam. Pellentesque','5247596307403468')
-,(6,'Tatiana','Moses','P.O. Box 587, 6826 Nibh. Av.','Bearberry','1726','(611) 670-4920', 'https://randomuser.me/api/portraits/men/24.jpg', 'ultrices posuere cubilia Curae; Phasellus ornare. Fusce mollis. Duis sit amet diam eu dolor egestas','526608 208002 4637')
+,(6,'Tatiana','Moses','P.O. Box 587, 6826 Nibh. Av.','Bearberry','1726','(611) 670-4920', 'https://randomuser.me/api/portraits/men/24.jpg', 'ultrices posuere cubilia Curae; Phasellus ornare. Fusce mollis. Duis sit amet diam eu dolor egestas','5266082080024637')
 ,(7,'Joel','Combs','176-4951 Magnis Rd.','Saint-Martin','R57 6AX','(952) 235-8947', 'https://randomuser.me/api/portraits/men/47.jpg', 'Fusce aliquam, enim nec tempus scelerisque, lorem ipsum sodales purus, in molestie tortor nibh sit amet orci. Ut sagittis','5104621899610122')
 ,(8,'Freya','Marks','8422 Eu St.','Frutillar','40914','(433) 445-2959', 'https://randomuser.me/api/portraits/men/50.jpg','ipsum. Curabitur consequat, lectus sit amet luctus vulputate, nisi sem semper erat, in consectetuer ipsum nunc id enim.','5333386898100847')
 ,(9,'Buckminster','Fitzgerald','2657 Elementum St.','Introd','525814','(791) 903-9868', 'https://randomuser.me/api/portraits/women/2.jpg','ut, molestie in, tempus eu, ligula. Aenean euismod mauris eu elit. Nulla facilisi. Sed','5569292442374323')
-
-,(10,'Fletcher','Myers','P.O. Box 173, 3519 Eros. Street','Carbonear','XG7 7FI','(958) 843-6998', 'https://randomuser.me/api/portraits/women/9.jpg','luctus. Curabitur egestas nunc sed libero. Proin sed turpis nec mauris blandit mattis. Cras eget nisi dictum','536245 313390 5978')
+,(10,'Fletcher','Myers','P.O. Box 173, 3519 Eros. Street','Carbonear','XG7 7FI','(958) 843-6998', 'https://randomuser.me/api/portraits/women/9.jpg','luctus. Curabitur egestas nunc sed libero. Proin sed turpis nec mauris blandit mattis. Cras eget nisi dictum','5362453133905978')
 ,(11,'Ima','Cherry','500-882 Nascetur Rd.','Winnipeg','21503','(452) 441-5164', 'https://randomuser.me/api/portraits/men/5.jpg', 'mi lorem, vehicula et, rutrum eu, ultrices sit amet, risus. Donec','5136477096049073')
-,(12,'Buckminster','Whitfield','621-9427 Vitae Road','Tay','34-301','(251) 745-4480', 'https://randomuser.me/api/portraits/men/42.jpg', 'scelerisque, lorem ipsum sodales purus, in molestie tortor nibh sit amet orci.','530984 592912 4621')
-,(13,'Jordan','Short','Ap #455-1274 Est, Rd.','Oelegem','49408','(107) 174-6947', 'https://randomuser.me/api/portraits/men/89.jpg','metus vitae velit egestas lacinia. Sed congue, elit sed consequat','523180 2951209211')
-,(14,'Kadeem','Stanton','3177 Dignissim Ave','Contulmo','1094 OB','(374) 746-8373', 'https://randomuser.me/api/portraits/men/97.jpg', 'eget metus. In nec orci. Donec nibh. Quisque nonummy ipsum non','5325 4040 5997 8602')
-,(15,'Mark','Nixon','5633 Commodo Street','Ravels','49156','(519) 687-8278', 'https://randomuser.me/api/portraits/women/30.jpg', 'gravida non, sollicitudin a, malesuada id, erat. Etiam vestibulum massa rutrum magna. Cras convallis convallis dolor. Quisque tincidunt','512 70097 18918 137')
+,(12,'Buckminster','Whitfield','621-9427 Vitae Road','Tay','34-301','(251) 745-4480', 'https://randomuser.me/api/portraits/men/42.jpg', 'scelerisque, lorem ipsum sodales purus, in molestie tortor nibh sit amet orci.','5309845929124621')
+,(13,'Jordan','Short','Ap #455-1274 Est, Rd.','Oelegem','49408','(107) 174-6947', 'https://randomuser.me/api/portraits/men/89.jpg','metus vitae velit egestas lacinia. Sed congue, elit sed consequat','5231802951209211')
+,(14,'Kadeem','Stanton','3177 Dignissim Ave','Contulmo','1094 OB','(374) 746-8373', 'https://randomuser.me/api/portraits/men/97.jpg', 'eget metus. In nec orci. Donec nibh. Quisque nonummy ipsum non','5325404059978602')
+,(15,'Mark','Nixon','5633 Commodo Street','Ravels','49156','(519) 687-8278', 'https://randomuser.me/api/portraits/women/30.jpg', 'gravida non, sollicitudin a, malesuada id, erat. Etiam vestibulum massa rutrum magna. Cras convallis convallis dolor. Quisque tincidunt','5127009718918137')
 ,(16,'Jolie','Sheppard','Ap #256-9164 Augue St.','Coleville Lake','289127','(323) 867-4383', 'https://randomuser.me/api/portraits/women/1.jpg', 'vulputate velit eu sem. Pellentesque ut ipsum ac mi eleifend egestas. Sed pharetra, felis eget varius ultrices, mauris','5129318554918277')
-,(17,'Shelly','Hopkins','Ap #837-3393 Orci Rd.','Bridge of Allan','C3T 5L4','(536) 169-8747', 'https://randomuser.me/api/portraits/men/99.jpg', 'varius. Nam porttitor scelerisque neque. Nullam nisl. Maecenas malesuada fringilla est. Mauris eu turpis. Nulla aliquet.','512382 168044 3785')
-,(18,'Channing','Grimes','960-7027 Et St.','Langen','54703','(613) 748-5131', 'https://randomuser.me/api/portraits/women/18.jpg', 'massa. Quisque porttitor eros nec tellus. Nunc lectus pede, ultrices a, auctor non, feugiat nec,','5452 0703 2938 0146')
-,(19,'Rina','Mckenzie','P.O. Box 736, 6481 Mollis. Street','Toernich','4088','(726) 685-7944', 'https://randomuser.me/api/portraits/women/31.jpg', 'vel, mauris. Integer sem elit, pharetra ut, pharetra sed, hendrerit a, arcu. Sed et libero. Proin mi. Aliquam','519130 6988744479')
-,(20,'September','Cohen','P.O. Box 507, 2335 Adipiscing Street','Bavikhove','39616','(153) 718-4987', 'https://randomuser.me/api/portraits/men/2.jpg', 'sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin vel nisl. Quisque fringilla','558125 313839 3286');
+,(17,'Shelly','Hopkins','Ap #837-3393 Orci Rd.','Bridge of Allan','C3T 5L4','(536) 169-8747', 'https://randomuser.me/api/portraits/men/99.jpg', 'varius. Nam porttitor scelerisque neque. Nullam nisl. Maecenas malesuada fringilla est. Mauris eu turpis. Nulla aliquet.','5123821680443785')
+,(18,'Channing','Grimes','960-7027 Et St.','Langen','54703','(613) 748-5131', 'https://randomuser.me/api/portraits/women/18.jpg', 'massa. Quisque porttitor eros nec tellus. Nunc lectus pede, ultrices a, auctor non, feugiat nec,','5452070329380146')
+,(19,'Rina','Mckenzie','P.O. Box 736, 6481 Mollis. Street','Toernich','4088','(726) 685-7944', 'https://randomuser.me/api/portraits/women/31.jpg', 'vel, mauris. Integer sem elit, pharetra ut, pharetra sed, hendrerit a, arcu. Sed et libero. Proin mi. Aliquam','5191306988744479')
+,(20,'September','Cohen','P.O. Box 507, 2335 Adipiscing Street','Bavikhove','39616','(153) 718-4987', 'https://randomuser.me/api/portraits/men/2.jpg', 'sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin vel nisl. Quisque fringilla','5581253138393286');
 
 -- Campaigns
 
@@ -148,3 +147,67 @@ VALUES ('US&A, Beautiful','mauris erat eget ipsum. Suspendisse sagittis. Nullam 
 ,('Extraordinary, Guns','ac orci. Ut semper pretium neque. Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra. Nam ac nulla. In tincidunt congue turpis. In condimentum. Donec at arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec tincidunt.','9805.74')
 ,('Money, Beautiful','nibh vulputate mauris sagittis placerat. Cras dictum ultricies ligula. Nullam enim. Sed nulla ante, iaculis nec, eleifend non, dapibus rutrum, justo. Praesent luctus. Curabitur egestas nunc sed libero. Proin sed turpis nec mauris blandit mattis. Cras eget nisi dictum augue','7310.71')
 ,('Greedy, Environment','ullamcorper, velit in aliquet lobortis, nisi nibh lacinia orci, consectetuer euismod est arcu ac orci. Ut semper pretium neque. Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra. Nam ac nulla. In tincidunt congue turpis. In condimentum. Donec at arcu. Vestibulum ante ipsum primis','6252.22');
+
+-- Campaign relations 'owner'
+INSERT INTO "campaign_relation" (user_account_id,campaign_id,user_role)
+VALUES (18,1,'owner'),(4,2,'owner'),(4,3,'owner'),(5,4,'owner'),(12,5,'owner'),(17,6,'owner'),(19,7,'owner'),(9,8,'owner')
+,(18,9,'owner'),(12,10,'owner'),(2,11,'owner'),(14,12,'owner'),(5,13,'owner'),(13,14,'owner'),(1,15,'owner'),(20,16,'owner')
+,(15,17,'owner'),(7,18,'owner'),(18,19,'owner'),(14,20,'owner'),(5,21,'owner'),(9,22,'owner'),(8,23,'owner'),(16,24,'owner')
+,(14,25,'owner'),(9,26,'owner'),(11,27,'owner'),(2,28,'owner'),(15,29,'owner'),(12,30,'owner'),(3,31,'owner'),(11,32,'owner')
+,(5,33,'owner'),(3,34,'owner'),(7,35,'owner'),(14,36,'owner'),(1,37,'owner'),(18,38,'owner'),(18,39,'owner'),(14,40,'owner')
+,(13,41,'owner'),(2,42,'owner'),(8,43,'owner'),(17,44,'owner'),(11,45,'owner'),(16,46,'owner'),(5,47,'owner'),(6,48,'owner')
+,(3,49,'owner'),(18,50,'owner'),(17,51,'owner'),(1,52,'owner'),(15,53,'owner'),(19,54,'owner'),(20,55,'owner'),(2,56,'owner')
+,(4,57,'owner'),(10,58,'owner'),(14,59,'owner'),(4,60,'owner'),(7,61,'owner'),(8,62,'owner'),(14,63,'owner'),(2,64,'owner')
+,(7,65,'owner'),(1,66,'owner'),(5,67,'owner'),(11,68,'owner'),(9,69,'owner'),(6,70,'owner'),(1,71,'owner'),(1,72,'owner')
+,(2,73,'owner'),(1,74,'owner'),(16,75,'owner'),(16,76,'owner'),(17,77,'owner'),(14,78,'owner'),(16,79,'owner'),(14,80,'owner')
+,(13,81,'owner'),(14,82,'owner'),(2,83,'owner'),(4,84,'owner'),(13,85,'owner'),(12,86,'owner'),(19,87,'owner'),(18,88,'owner')
+,(7,89,'owner'),(11,90,'owner'),(7,91,'owner'),(9,92,'owner'),(9,93,'owner'),(12,94,'owner'),(15,95,'owner'),(11,96,'owner')
+,(11,97,'owner'),(10,98,'owner'),(6,99,'owner'),(5,100,'owner');
+
+-- Transaction
+INSERT INTO "transaction" (credit_card,amount)
+VALUES ('5266082080024637','94.23'),('5569292442374323','28.71'),('5253859724873767','76.41'),('5129376918985358','50.87')
+,('5333386898100847','71.14'),('5104621899610122','61.22'),('5297380897614472','59.03'),('5104621899610122','81.80')
+,('5127009718918137','12.10'),('5266082080024637','36.30'),('5266082080024637','34.49'),('5136477096049073','86.53')
+,('5247596307403468','80.33'),('5123821680443785','76.90'),('5247596307403468','41.26'),('5452070329380146','55.15')
+,('5247596307403468','59.69'),('5133451220635308','12.79'),('5129318554918277','13.26'),('5231802951209211','65.49')
+,('5325404059978602','48.47'),('5133451220635308','77.82'),('5266082080024637','48.19'),('5266082080024637','0.30')
+,('5452070329380146','9.97'),('5191306988744479','85.40'),('5129376918985358','48.67'),('5309845929124621','52.18')
+,('5297380897614472','96.51'),('5325404059978602','38.33'),('5136477096049073','49.49'),('5136477096049073','53.24')
+,('5129376918985358','24.98'),('5191306988744479','94.38'),('5266082080024637','73.77'),('5104621899610122','10.07')
+,('5129376918985358','16.87'),('5333386898100847','89.47'),('5253859724873767','91.41'),('5266082080024637','42.45')
+,('5191306988744479','98.03'),('5362453133905978','97.11'),('5362453133905978','48.57'),('5231802951209211','54.19')
+,('5136477096049073','17.11'),('5297380897614472','11.33'),('5569292442374323','32.54'),('5266082080024637','9.44')
+,('5123821680443785','0.85'),('5129376918985358','64.20'),('5133451220635308','15.51'),('5452070329380146','93.35')
+,('5333386898100847','16.26'),('5362453133905978','80.24'),('5325404059978602','7.87'),('5136477096049073','33.50')
+,('5309845929124621','44.82'),('5191306988744479','45.83'),('5123821680443785','76.15'),('5247596307403468','32.69')
+,('5129376918985358','8.18'),('5129318554918277','43.31'),('5129376918985358','60.60'),('5452070329380146','63.43')
+,('5452070329380146','70.34'),('5191306988744479','52.79'),('5123821680443785','63.03'),('5133451220635308','80.36')
+,('5136477096049073','7.59'),('5325404059978602','24.83'),('5104621899610122','11.70'),('5297380897614472','33.58')
+,('5266082080024637','90.41'),('5309845929124621','8.68'),('5231802951209211','88.62'),('5325404059978602','86.69')
+,('5581253138393286','68.99'),('5231802951209211','57.22'),('5309845929124621','1.17'),('5253859724873767','23.40')
+,('5127009718918137','84.21'),('5129376918985358','18.65'),('5133451220635308','95.73'),('5362453133905978','44.82')
+,('5253859724873767','75.63'),('5581253138393286','76.53'),('5129318554918277','13.84'),('5191306988744479','91.12')
+,('5127009718918137','49.54'),('5247596307403468','66.17'),('5297380897614472','70.32'),('5362453133905978','85.11')
+,('5333386898100847','0.04'),('5123821680443785','75.84'),('5123821680443785','72.61'),('5569292442374323','12.77')
+,('5266082080024637','95.32'),('5191306988744479','37.96'),('5333386898100847','87.96'),('5129376918985358','29.34');
+
+-- Campaign relation 'pledged'
+INSERT INTO "campaign_relation" (user_account_id,campaign_id,transaction_id,user_role)
+VALUES (14,100,1,'pledged'),(16,14,2,'pledged'),(13,84,3,'pledged'),(17,70,4,'pledged'),(13,76,5,'pledged'),(1,84,6,'pledged')
+,(7,50,7,'pledged'),(16,24,8,'pledged'),(2,81,9,'pledged'),(14,71,10,'pledged'),(11,53,11,'pledged'),(7,100,12,'pledged')
+,(2,92,13,'pledged'),(9,42,14,'pledged'),(17,40,15,'pledged'),(12,81,16,'pledged'),(16,82,17,'pledged'),(4,62,18,'pledged')
+,(16,60,19,'pledged'),(1,13,20,'pledged'),(8,83,21,'pledged'),(1,78,22,'pledged'),(9,16,23,'pledged'),(16,41,24,'pledged')
+,(18,31,25,'pledged'),(13,33,26,'pledged'),(7,26,27,'pledged'),(5,77,28,'pledged'),(5,96,29,'pledged'),(1,97,30,'pledged')
+,(9,17,31,'pledged'),(6,44,32,'pledged'),(2,33,33,'pledged'),(19,9,34,'pledged'),(7,86,35,'pledged'),(20,36,36,'pledged')
+,(18,17,37,'pledged'),(12,1,38,'pledged'),(12,13,39,'pledged'),(17,79,40,'pledged'),(8,100,41,'pledged'),(8,58,42,'pledged')
+,(19,38,43,'pledged'),(8,85,44,'pledged'),(7,7,45,'pledged'),(6,14,46,'pledged'),(11,16,47,'pledged'),(17,1,48,'pledged')
+,(10,57,49,'pledged'),(10,45,50,'pledged'),(17,81,51,'pledged'),(11,83,52,'pledged'),(6,7,53,'pledged'),(12,35,54,'pledged')
+,(13,83,55,'pledged'),(12,21,56,'pledged'),(17,44,57,'pledged'),(20,77,58,'pledged'),(11,75,59,'pledged'),(3,94,60,'pledged')
+,(4,23,61,'pledged'),(2,17,62,'pledged'),(16,16,63,'pledged'),(17,43,64,'pledged'),(9,78,65,'pledged'),(11,1,66,'pledged')
+,(20,16,67,'pledged'),(1,50,68,'pledged'),(5,26,69,'pledged'),(4,58,70,'pledged'),(9,94,71,'pledged'),(10,95,72,'pledged')
+,(4,100,73,'pledged'),(2,11,74,'pledged'),(5,66,75,'pledged'),(15,18,76,'pledged'),(11,4,77,'pledged'),(13,52,78,'pledged')
+,(15,78,79,'pledged'),(15,69,80,'pledged'),(1,11,81,'pledged'),(10,31,82,'pledged'),(14,61,83,'pledged'),(18,32,84,'pledged')
+,(6,6,85,'pledged'),(18,63,86,'pledged'),(4,69,87,'pledged'),(13,60,88,'pledged'),(17,69,89,'pledged'),(17,22,90,'pledged')
+,(2,29,91,'pledged'),(2,41,92,'pledged'),(2,54,93,'pledged'),(18,39,94,'pledged'),(15,8,95,'pledged'),(11,6,96,'pledged')
+,(6,95,97,'pledged'),(20,39,98,'pledged'),(15,88,99,'pledged'),(20,22,100,'pledged');
