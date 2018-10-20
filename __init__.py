@@ -33,7 +33,7 @@ def create_app():
         FROM campaign c                                                                                                           
         INNER JOIN campaign_relation cr on c.id = cr.campaign_id                                                                
         INNER JOIN user_account ua on cr.user_account_id = ua.id                                                                
-        INNER JOIN user_profile up on ua.id = up.user_account_id WHERE cr.user_role='owner' 
+        INNER JOIN user_profile up on ua.id = up.user_account_id WHERE cr.user_role='owner'                                                         
         ORDER BY c.date_created DESC LIMIT 3;
         """)
 
