@@ -15,15 +15,15 @@ def view_edit_user_profile(id):
     campaigns = None
 
     try:
-        cursor.execute("""SELECT up.first_name, up.last_name, up.address1, up.address2, up.postal_code, up.phone_number, up.profile_image, up.description, up.credit_card
-                  FROM user_profile up
-                  WHERE up.id=%s;""", (id,))
+        cursor.execute("""SELECT ua.first_name, ua.last_name, ua.address1, ua.address2, ua.postal_code, ua.phone_number, ua.profile_image, ua.description, ua.credit_card
+                  FROM user_account ua
+                  WHERE ua.id=%s;""", (id,))
         user_info = cursor.fetchone()
         cursor.execute("""
                 SELECT c.id, c.name, c.image AS campaign_image, c.date_created 
-                FROM user_profile up INNER JOIN campaign_relation cr ON cr.user_account_id = up.user_account_id
+                FROM user_account ua INNER JOIN campaign_relation cr ON cr.user_account_email = ua.email
                 INNER JOIN campaign c ON c.id = cr.campaign_id
-                WHERE up.user_account_id=%s AND user_role='owner' ORDER BY c.date_created DESC LIMIT 10;
+                WHERE ua.id=%s AND user_role='owner' ORDER BY c.date_created DESC LIMIT 10;
             """, (id,))
         campaigns = cursor.fetchall()
 
@@ -38,7 +38,7 @@ def view_edit_user_profile(id):
         try:
             with connection:
                 with cursor:
-                    cursor.execute("""UPDATE user_profile
+                    cursor.execute("""UPDATE user_account
                                       SET (first_name, last_name, address1, address2, postal_code, 
                                            phone_number, profile_image, description, credit_card) =  
                                           (%s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -63,28 +63,28 @@ def view_public_profile(id):
     campaign_created = None
 
     try:
-        cursor.execute("""SELECT up.profile_image, up.first_name, up.last_name, 
-        up.description, ua.email AS owner_email
-        FROM user_profile up INNER JOIN user_account ua ON up.user_account_id = ua.id
-        WHERE up.user_account_id=%s;
+        cursor.execute("""SELECT ua.profile_image, ua.first_name, ua.last_name, 
+        ua.description, ua.email AS owner_email
+        FROM user_account ua
+        WHERE ua.id=%s;
         """, (id,))
 
         public_profile = cursor.fetchone()
 
         cursor.execute("""
                 SELECT c.id, c.name, c.image AS campaign_image, c.date_created 
-                FROM user_profile up INNER JOIN campaign_relation cr ON cr.user_account_id = up.user_account_id
+                FROM user_account ua INNER JOIN campaign_relation cr ON cr.user_account_email = ua.email
                 INNER JOIN campaign c ON c.id = cr.campaign_id
-                WHERE up.user_account_id=%s AND user_role='owner' ORDER BY c.date_created DESC LIMIT 10;
+                WHERE ua.id=%s AND user_role='owner' ORDER BY c.date_created DESC LIMIT 10;
             """, (id,))
 
         campaign_created = cursor.fetchall()
 
         cursor.execute("""
                 SELECT c.id, c.name, c.image AS campaign_image, c.date_created
-                FROM user_profile up INNER JOIN campaign_relation cr ON cr.user_account_id = up.user_account_id
+                FROM user_account ua INNER JOIN campaign_relation cr ON cr.user_account_email = ua.email
                 INNER JOIN campaign c ON c.id = cr.campaign_id
-                WHERE up.user_account_id=%s AND user_role='pledged' ORDER BY c.date_created DESC LIMIT 10;
+                WHERE ua.id=%s AND user_role='pledged' ORDER BY c.date_created DESC LIMIT 10;
         """, (id,))
 
         campaign_donated = cursor.fetchall()

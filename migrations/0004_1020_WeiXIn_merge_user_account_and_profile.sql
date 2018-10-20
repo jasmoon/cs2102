@@ -12,9 +12,10 @@ ALTER TABLE user_account ADD COLUMN tsv tsvector;
 DROP TABLE user_profile;
 
 ALTER TABLE user_account DROP CONSTRAINT user_account_pkey CASCADE;
-ALTER TABLE user_account DROP COLUMN id;
 ALTER TABLE user_account DROP CONSTRAINT user_account_email_key;
 ALTER TABLE user_account ADD CONSTRAINT user_account_pkey PRIMARY KEY (email);
+ALTER TABLE user_account ADD UNIQUE(id);
+
 
 ALTER TABLE campaign_relation DROP COLUMN user_account_id;
 ALTER TABLE campaign_relation ADD COLUMN user_account_email VARCHAR(255) REFERENCES user_account(email) ON DELETE CASCADE NOT NULL;
