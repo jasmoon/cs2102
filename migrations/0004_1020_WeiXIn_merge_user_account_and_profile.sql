@@ -19,3 +19,8 @@ ALTER TABLE user_account ADD UNIQUE(id);
 
 ALTER TABLE campaign_relation DROP COLUMN user_account_id;
 ALTER TABLE campaign_relation ADD COLUMN user_account_email VARCHAR(255) REFERENCES user_account(email) ON DELETE CASCADE NOT NULL;
+
+DROP TRIGGER IF EXISTS tsv_update_user_account ON user_account;
+CREATE TRIGGER tsv_update_user_account BEFORE INSERT OR UPDATE
+  ON user_account FOR EACH ROW EXECUTE PROCEDURE
+  tsvector_update_trigger(tsv, 'pg_catalog.english', first_name, last_name, description);
