@@ -51,14 +51,13 @@ def register():
         with connection:
             with cursor:
                 try:
-                    cursor.execute("INSERT INTO user_account(email, password) VALUES (%s, %s);",
-                                   (form.email.data, generate_password_hash(form.password.data)))
-
                     cursor.execute("""INSERT INTO 
-                        user_profile(first_name, last_name, address1, address2, postal_code, phone_number, 
-                        profile_image, description, credit_card, user_account_id) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s,(SELECT id FROM user_account WHERE email=%s));""",
+                        user_account(email, password, first_name, last_name, address1, address2, postal_code, phone_number, 
+                        profile_image, description, credit_card) 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);""",
                                    (
+                                       form.email.data,
+                                       generate_password_hash(form.password.data),
                                        form.first_name.data,
                                        form.last_name.data,
                                        form.address1.data,
@@ -68,7 +67,6 @@ def register():
                                        form.profile_image.data,
                                        form.description.data,
                                        form.credit_card.data,
-                                       form.email.data
                                    )
                     )
                     return redirect(url_for('auth.login'))

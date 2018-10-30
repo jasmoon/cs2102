@@ -26,9 +26,13 @@ def create_campaign():
 
                     id = cursor.fetchone()[0]
 
-                    cursor.execute("""INSERT INTO campaign_relation(user_account_id, campaign_id, user_role) 
+                    cursor.execute("""SELECT email FROM user_account WHERE user_account.id=%s""", (session['user_id'],))
+
+                    user_email = cursor.fetchone()[0]
+
+                    cursor.execute("""INSERT INTO campaign_relation(user_account_email, campaign_id, user_role) 
                                       VALUES (%s, %s, %s); """,
-                                   (session['user_id'], id, 'owner'))
+                                   (user_email , id, 'owner'))
                     return redirect(url_for("campaign.view_campaign", id=id))
         except Exception as e:
             current_app.logger.error(e)
@@ -47,17 +51,22 @@ def edit_campaign(id):
     curr_campaign = dict(zip(list(curr_campaign._index.keys()), list(curr_campaign)))
     current_app.logger.info(curr_campaign)
     form = CampaignEditForm(**curr_campaign)
-    owner_id = None
+    owner_email = None
 
     try:
-        cursor.execute("""SELECT user_account_id FROM campaign_relation WHERE campaign_id=%s AND user_role='owner'""",
+        cursor.execute("""SELECT user_account_email FROM campaign_relation WHERE campaign_id=%s AND user_role='owner'""",
                        (id,))
-        owner_id = cursor.fetchone()[0]
+        owner_email = cursor.fetchone()[0]
+
+        cursor.execute("""SELECT email FROM user_account WHERE user_account.id=%s""", (session['user_id'],))
+
+        user_email = cursor.fetchone()[0]
+
 
     except Exception as e:
         current_app.logger.error(e)
 
-    if owner_id != session['user_id']:
+    if owner_email != user_email:
         flash("You cannot edit a campaign you don't own!", 'error')
         return redirect(url_for("campaign.view_campaign", id=id))
 
@@ -92,23 +101,22 @@ def view_campaign(id):
         try:
             cursor.execute("""
                 SELECT c.id AS campaign_id, c.name, c.description, c.image, c.amount_requested, c.date_created, 
-                c.last_modified, up.id AS owner_id, up.first_name, up.last_name, up.profile_image, 
-                up.description AS owner_description, 
+                c.last_modified, ua.id AS owner_id, ua.first_name, ua.last_name, ua.profile_image, 
+                ua.description AS owner_description, 
                 get_total_donations(c.id) AS amount_donated,
                 ceil((get_total_donations(c.id)/c.amount_requested)*100) AS percentage
                 FROM campaign c
-                INNER JOIN campaign_relation cr on c.id = cr.campaign_id
-                INNER JOIN user_account ua on cr.user_account_id = ua.id
-                INNER JOIN user_profile up on ua.id = up.user_account_id WHERE c.id = %s AND cr.user_role='owner';
+                INNER JOIN campaign_relation cr on c.id = cr.campaign_id AND c.id=%s
+                INNER JOIN user_account ua on cr.user_account_email = ua.email AND cr.user_role='owner';
             """, (id,))
 
             campaign = cursor.fetchone()
 
             cursor.execute("""
-                SELECT up.first_name, up.last_name, up.profile_image, t.amount
+                SELECT ua.first_name, ua.last_name, ua.profile_image, t.amount
                 FROM campaign c INNER JOIN campaign_relation cr ON c.id = cr.campaign_id
                 INNER JOIN transaction t ON t.id = cr.transaction_id
-                INNER JOIN user_profile up ON cr.user_account_id = up.user_account_id
+                INNER JOIN user_account ua ON cr.user_account_email = ua.email
                 WHERE user_role='pledged' AND c.id=%s ORDER BY t.date_created DESC LIMIT 10;
             """, (id,))
 
@@ -124,7 +132,7 @@ def view_campaign(id):
             with connection:
                 with cursor:
                     cursor.execute("""
-                        SELECT credit_card FROM user_profile WHERE user_account_id=%s
+                        SELECT credit_card FROM user_account WHERE user_account.id=%s
                     """, (session['user_id'],))
 
 
@@ -138,10 +146,14 @@ def view_campaign(id):
 
                     transaction_id = cursor.fetchone()[0]
 
+                    cursor.execute("""SELECT email FROM user_account WHERE user_account.id=%s""", (session['user_id'],))
+
+                    user_email = cursor.fetchone()[0]
+
                     cursor.execute("""
-                        INSERT INTO campaign_relation(user_account_id, campaign_id, transaction_id, user_role) 
+                        INSERT INTO campaign_relation(user_account_email, campaign_id, transaction_id, user_role) 
                         VALUES (%s, %s, %s, %s)   
-                    """, (session['user_id'], form.campaign_id.data, transaction_id, 'pledged'))
+                    """, (user_email, form.campaign_id.data, transaction_id, 'pledged'))
 
                     flash('Successfully donated!', 'success')
                     setup()
@@ -172,11 +184,11 @@ def search_campaigns(offset):
             SELECT c.name, c.description, c.image, c.id AS campaign_id, get_total_donations(c.id) AS amount_donated, 
             c.amount_requested, ceil((get_total_donations(c.id)/c.amount_requested)*100) AS percentage
             FROM campaign c
-            INNER JOIN campaign_relation cr ON c.id = cr.campaign_id
-            INNER JOIN user_account ua ON cr.user_account_id = ua.id
-            INNER JOIN user_profile up ON ua.id = up.user_account_id where cr.user_role='owner'
-            AND  c.tsv || up.tsv @@ plainto_tsquery('english', %s) 
-            ORDER BY ts_rank_cd(c.tsv || up.tsv, plainto_tsquery('english', %s)) DESC;
+            INNER JOIN campaign_relation cr ON c.id = cr.campaign_id 
+            INNER JOIN user_account ua ON cr.user_account_email = ua.email
+            WHERE cr.user_role='owner'
+            AND  c.tsv || ua.tsv @@ plainto_tsquery('english', %s) 
+            ORDER BY ts_rank_cd(c.tsv || ua.tsv, plainto_tsquery('english', %s)) DESC;
         """, (query, query,))
         campaigns = cursor.fetchall();
         current_app.logger.info(str(campaigns))
@@ -190,13 +202,13 @@ def search_campaigns(offset):
 
     cursor.execute("""
         SELECT c.id AS campaign_id, c.name, c.description, c.image, c.amount_requested, c.date_created,                           
-        c.last_modified, up.id AS owner_id, up.first_name, up.last_name, up.profile_image, 
-        up.description AS owner_description, get_total_donations(c.id) AS amount_donated, 
+        c.last_modified, ua.id AS owner_id, ua.first_name, ua.last_name, ua.profile_image, 
+        ua.description AS owner_description, get_total_donations(c.id) AS amount_donated, 
         ceil((get_total_donations(c.id)/c.amount_requested)*100) AS percentage  
         FROM campaign c                                                                                                           
-        INNER JOIN campaign_relation cr on c.id = cr.campaign_id                                                                
-        INNER JOIN user_account ua on cr.user_account_id = ua.id                                                                
-        INNER JOIN user_profile up on ua.id = up.user_account_id WHERE cr.user_role='owner' 
+        INNER JOIN campaign_relation cr on c.id = cr.campaign_id                                                              
+        INNER JOIN user_account ua on cr.user_account_email = ua.email
+        WHERE cr.user_role='owner'                                                                
         ORDER BY c.date_created ASC OFFSET %s ROWS LIMIT 9;
         """, (offset*9,))
 
