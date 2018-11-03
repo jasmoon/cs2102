@@ -1,5 +1,5 @@
 import math
-from flask import current_app, g, Blueprint, session, render_template, redirect, url_for, flash
+from flask import current_app, Blueprint, session, render_template, redirect, url_for, flash
 from decimal import Decimal
 
 from auth import login_required
@@ -155,7 +155,15 @@ def view_campaign(id):
                         VALUES (%s, %s, %s, %s)   
                     """, (user_email, form.campaign_id.data, transaction_id, 'pledged'))
 
-                    flash('Successfully donated!', 'success')
+                    cursor.execute("""
+                        SELECT * FROM transaction WHERE id=%s;
+                    """, (transaction_id,))
+
+                    if(cursor.rowcount == 0):
+                        flash('You cannot donate to your own campaign!', 'warning')
+                    else:
+                        flash('Successfully donated!', 'success')
+
                     setup()
                     return render_template("campaign/campaign.html",
                                            form=form, campaign=campaign, donations=donations)
@@ -190,7 +198,7 @@ def search_campaigns(offset):
             AND  c.tsv || ua.tsv @@ plainto_tsquery('english', %s) 
             ORDER BY ts_rank_cd(c.tsv || ua.tsv, plainto_tsquery('english', %s)) DESC;
         """, (query, query,))
-        campaigns = cursor.fetchall();
+        campaigns = cursor.fetchall()
         current_app.logger.info(str(campaigns))
 
         return render_template("campaign/gallery.html", search_term=form.search.data, campaigns=campaigns, form=form)
