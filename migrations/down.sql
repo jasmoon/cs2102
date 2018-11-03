@@ -5,4 +5,6 @@ DROP TABLE user_account CASCADE;
 DROP TABLE user_profile CASCADE;
 DROP FUNCTION trigger_update_timestamp();
 DROP FUNCTION update_last_login(integer);
+DROP FUNCTION get_total_donations(id integer);
+DROP FUNCTION check_if_owner();
 DROP TYPE roles;
