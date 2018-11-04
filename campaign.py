@@ -95,6 +95,7 @@ def view_campaign(id):
     amount_donated = None
     percentage = None
     donations = None
+    user_id = session.get('user_id');
 
     def setup():
         nonlocal campaign, amount_donated, percentage, donations
@@ -125,7 +126,7 @@ def view_campaign(id):
         except Exception as e:
             current_app.logger.error(e)
 
-    if form.validate_on_submit():
+    if form.validate_on_submit() and user_id is not None:
         try:
             connection = get_connection()
             cursor = get_cursor()
@@ -170,6 +171,10 @@ def view_campaign(id):
         except Exception as e:
             current_app.logger.error(e)
             flash(e, 'error')
+
+    if form.validate_on_submit() and user_id is None:
+        flash("You cannot donate without logging in!", "warning")
+        return redirect(url_for("auth.login"))
 
     flash(form.errors, 'error')
     setup()
