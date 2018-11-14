@@ -8,11 +8,38 @@
 <form method="post">
     {{ form.csrf_token }}
     {{ form.campaign_id(value=id) }}
-    <p>{{ form.name.label }} {{ form.name }}</p>
-    <p>{{ form.description.label }} {{ form.description }}</p>
-    <p>{{ form.image.label }} {{ form.image }}</p>
-    <p>{{ form.amount_requested.label }} {{ form.amount_requested }}</p>
-
-    <input type="submit">
+    <v-layout row justify-center>
+    <v-flex xs10 offset-xs1>
+        <v-text-field
+                label="{{ form.name.label.text }}"
+                id="{{ form.name.label.field_id }}"
+                name="{{ form.name.label.field_id }}"
+                value="{{ form.name.data }}"
+                outline
+        ></v-text-field>
+        <v-text-field
+                label="{{ form.description.label.text }}"
+                id="{{ form.description.label.field_id }}"
+                name="{{ form.description.label.field_id }}"
+                value="{{ form.description.data }}"
+                outline
+        ></v-text-field>
+        <v-text-field
+                label="{{ form.image.label.text }}"
+                id="{{ form.image.label.field_id }}"
+                name="{{ form.image.label.field_id }}"
+                value="{{ form.image.data }}"
+                outline
+        ></v-text-field>
+        <v-text-field
+                label="{{ form.amount_requested.label.text }}"
+                id="{{ form.amount_requested.label.field_id }}"
+                name="{{ form.amount_requested.label.field_id }}"
+                value="{{ form.amount_requested.data }}"
+                outline
+        ></v-text-field>
+        <v-btn type="submit">Submit</v-btn>
+    </v-flex>
+    </v-layout>
 </form>
 {% endblock %}

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired, Email, EqualTo, URL, Optional, NumberRange
-from wtforms import StringField, PasswordField, HiddenField, TextAreaField, DecimalField
+from wtforms import StringField, PasswordField, HiddenField, TextAreaField, DecimalField, BooleanField
 
 
 class SearchForm(FlaskForm):
@@ -70,3 +70,4 @@ class EditUserProfileForm(FlaskForm):
     profile_image = StringField('Profile Image: ', validators=[DataRequired(), URL()])
     description = StringField('Short Bio: ', validators=[DataRequired()])
     credit_card = StringField('Credit Card Number: ', validators=[DataRequired()])
+    is_admin = BooleanField('Admin Rights ')

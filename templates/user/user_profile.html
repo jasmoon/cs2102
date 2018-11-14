@@ -19,6 +19,7 @@
                             <div>{{ user_info.first_name }} {{ user_info.last_name }}</div>
                         </v-card-title>
                     </v-flex>
+                {% if g.user['is_admin'] or id==g.user['id'] %}
                     <v-flex text-xs-right>
 
                         <form method="post">
@@ -97,6 +98,14 @@
                                             maxlength="16"
                                             outline
                                     ></v-text-field>
+                                    {% if g.user['is_admin'] %}
+                                    <v-checkbox
+                                            label="{{ form.is_admin.label.text }}"
+                                            id="{{ form.is_admin.label.field_id }}"
+                                            name="{{ form.is_admin.label.field_id }}"
+                                            input-value="{{ user_info.is_admin.data }}"
+                                    ></v-checkbox>
+                                    {% endif %}
                                     <v-btn type="submit">Submit</v-btn>
                                 </v-flex>
                             </v-card>
@@ -104,6 +113,7 @@
                         </form>
 
                     </v-flex>
+                {% endif %}
                 </v-layout>
             </v-card>
             <v-card>
