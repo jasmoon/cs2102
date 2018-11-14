@@ -15,7 +15,7 @@ def view_edit_user_profile(id):
     campaigns = None
 
     try:
-        cursor.execute("""SELECT ua.first_name, ua.last_name, ua.address1, ua.address2, ua.postal_code, ua.phone_number, ua.profile_image, ua.description, ua.credit_card
+        cursor.execute("""SELECT ua.first_name, ua.last_name, ua.address1, ua.address2, ua.postal_code, ua.phone_number, ua.profile_image, ua.description, ua.credit_card, ua.is_admin
                   FROM user_account ua
                   WHERE ua.id=%s;""", (id,))
         user_info = cursor.fetchone()
@@ -40,11 +40,11 @@ def view_edit_user_profile(id):
                 with cursor:
                     cursor.execute("""UPDATE user_account
                                       SET (first_name, last_name, address1, address2, postal_code, 
-                                           phone_number, profile_image, description, credit_card) =  
-                                          (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                                           phone_number, profile_image, description, credit_card, is_admin) =  
+                                          (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                                       WHERE id=%s;""", (form.first_name.data, form.last_name.data, form.address1.data,
                                                         form.address2.data, form.postal_code.data, form.phone_number.data,
-                                                        form.profile_image.data, form.description.data, form.credit_card.data, id))
+                                                        form.profile_image.data, form.description.data, form.credit_card.data,str.lower(str(form.is_admin.data)), id))
             flash("Successfully updated!", 'success')
             return redirect(url_for("user.view_edit_user_profile", id=id))
 

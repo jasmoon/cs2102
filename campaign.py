@@ -1,5 +1,5 @@
 import math
-from flask import current_app, Blueprint, session, render_template, redirect, url_for, flash
+from flask import current_app, Blueprint, session, render_template, redirect, url_for, flash, g
 from decimal import Decimal
 
 from auth import login_required
@@ -52,11 +52,15 @@ def edit_campaign(id):
     current_app.logger.info(curr_campaign)
     form = CampaignEditForm(**curr_campaign)
     owner_email = None
+    user_email = None
+    is_admin = g.user['is_admin']
+    print('is_admin is :' + str(is_admin))
 
     try:
         cursor.execute("""SELECT user_account_email FROM campaign_relation WHERE campaign_id=%s AND user_role='owner'""",
                        (id,))
-        owner_email = cursor.fetchone()[0]
+        owner_email = cursor.fetchone()
+
 
         cursor.execute("""SELECT email FROM user_account WHERE user_account.id=%s""", (session['user_id'],))
 
@@ -66,7 +70,7 @@ def edit_campaign(id):
     except Exception as e:
         current_app.logger.error(e)
 
-    if owner_email != user_email:
+    if owner_email != user_email and not is_admin:
         flash("You cannot edit a campaign you don't own!", 'error')
         return redirect(url_for("campaign.view_campaign", id=id))
 

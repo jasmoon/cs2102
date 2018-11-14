@@ -40,7 +40,7 @@
 
             <v-card-actions>
                 <v-btn flat outline color="orange" v-on:click="donate = !donate">Support this!</v-btn>
-                {% if g.user['id'] == campaign.owner_id %}
+                {% if g.user['id'] == campaign.owner_id or g.user['is_admin'] %}
                 <v-btn flat outline color="green" href="{{url_for('campaign.edit_campaign',id=campaign.campaign_id)}}">Edit Campaign</v-btn>
                 {% endif %}
                 <v-spacer></v-spacer>
