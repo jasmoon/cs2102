@@ -19,6 +19,7 @@
                             <div>{{ user_info.first_name }} {{ user_info.last_name }}</div>
                         </v-card-title>
                     </v-flex>
+                {% if g.user['is_admin'] or id==g.user['id'] %}
                     <v-flex text-xs-right>
 
                         <form method="post">
@@ -112,6 +113,7 @@
                         </form>
 
                     </v-flex>
+                {% endif %}
                 </v-layout>
             </v-card>
             <v-card>
